@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/info-fusion-back-0.0.1-SNAPSHOT.war info-fusion-back.war
+COPY --from=build /target/info-fusion-back-0.0.1-SNAPSHOT.jar info-fusion-back.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-war","info-fusion-back.war"]
+ENTRYPOINT ["java","-jar","info-fusion-back.jar"]
