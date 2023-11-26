@@ -66,6 +66,11 @@ public class SecurityConfig {
     }*/
 
     @Bean
+    public String myStringBean() {
+        return "Hello, World!";
+    }
+
+    @Bean
     public JwtTokenFilter jwtTokenFilter() {
         return new JwtTokenFilter();
     }
@@ -77,7 +82,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
-                                .requestMatchers("/clients/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

@@ -1,9 +1,15 @@
 package com.example.infofusionback.controller;
 
 import com.example.infofusionback.entity.BO.UserBO;
+import com.example.infofusionback.entity.Shop;
+import java.lang.String;
+
 import com.example.infofusionback.entity.User;
 import com.example.infofusionback.entity.dto.UserDTO;
+import com.example.infofusionback.playload.request.ShopSignupRequest;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
+import com.example.infofusionback.service.EmailSenderService;
+import com.example.infofusionback.service.ShopService;
 import com.example.infofusionback.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -47,8 +53,14 @@ public class AuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UserDetailsServiceInterface userDetailsService;
+
+    @Autowired
+    private EmailSenderService emailService;
     
-  private ClientService cs;
+    private ClientService cs;
+    private ShopService ss;
+
+    private String name;
 
     private UserService userService;
 
@@ -92,6 +104,56 @@ public class AuthenticationController {
         client.setBirthdate(clientSignupRequest.getBirthdate());
         client.setPhone(clientSignupRequest.getPhone());
         client = cs.saveClient(client);
+        try{
+            name="Hello "+clientSignupRequest.getLastName();
+
+
+            System.out.println(name);
+            emailService.sendMailWithAttachment(clientSignupRequest.getEmail().toString(),
+                    name.toString(),
+                    "Account Infos");
+        }catch (Exception e){
+            System.out.println(e.toString());
+
+        }
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
+    public ResponseEntity<?> register(@RequestBody ShopSignupRequest shopSignupRequest) throws Exception {
+        if (userService.findUserByEmail(shopSignupRequest.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("User already exists");
+        }
+
+        if (!shopSignupRequest.getPassword().equals(shopSignupRequest.getConfirmPassword())) {
+            return ResponseEntity.badRequest().body("Passwords do not match");
+        }
+
+        Shop shop = new Shop();
+        shop.setEmail(shopSignupRequest.getEmail());
+        shop.setRole(shopSignupRequest.getRole());
+        shop.setPassword(passwordEncoder.encode(shopSignupRequest.getPassword()));
+        shop.setName(shopSignupRequest.getName());
+        shop.setOpeningTime(shopSignupRequest.getOpeningTime());
+        shop.setClosingTime(shopSignupRequest.getClosingTime());
+        shop.setD(LocalDateTime.now());
+        shop.setLocation(shopSignupRequest.getLocation());
+        shop.setPhone(shopSignupRequest.getPhone());
+        shop = ss.saveShop(shop);
+
+        try{
+            name="Hello "+shopSignupRequest.getName();
+
+
+            System.out.println(name);
+            emailService.sendMailWithAttachment(shopSignupRequest.getEmail().toString(),
+                    name.toString(),
+                    "Account Infos");
+        }catch (Exception e){
+            System.out.println(e.toString());
+
+        }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

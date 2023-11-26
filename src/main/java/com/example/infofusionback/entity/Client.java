@@ -1,10 +1,9 @@
 package com.example.infofusionback.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 @PrimaryKeyJoinColumn ( name =" id ")
@@ -21,17 +20,22 @@ public class Client extends User {
 	
 	@Column
 	private Date birthdate;
-	
+
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "id", referencedColumnName = "id")
+	private User user;
+
 	public Client() {
 
 	}
 
-	public Client(String firstName, String lastName, int phone, Date birthdate) {
-		super();
+	public Client(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String firstName, String lastName, int phone, Date birthdate, User user) {
+		super(id, email, password, d, role, client, shop);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.birthdate = birthdate;
+		this.user = user;
 	}
 
 	public String getFirstName() {
@@ -65,8 +69,12 @@ public class Client extends User {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	
-	
-	
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
