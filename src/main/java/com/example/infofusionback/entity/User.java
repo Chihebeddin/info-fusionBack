@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
 @Inheritance (strategy = InheritanceType.JOINED )
 @Table(	name = "users", 
 uniqueConstraints = { 
-	@UniqueConstraint(columnNames = "email") 
+		@UniqueConstraint(columnNames = "email") 
 })
 public class User {
 	@Id
@@ -32,12 +32,12 @@ public class User {
 	@NotBlank
 	@Size(max = 120)
 	private String password;
-	
+
 	@Column
-    private LocalDateTime d;
-	
+	private LocalDateTime d;
+
 	@Column(name = "role", nullable = false, columnDefinition = "varchar(255) default 'ROLE_CLIENT'", insertable = false)
-	  private String role;
+	private String role;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Client client;
@@ -45,13 +45,13 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Shop shop;
 
-	
-	 public User() {
-	
-		}
+
+	public User() {
+
+	}
 
 	public User(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop) {
-	 	super();
+		super();
 		this.id = id;
 		this.email = email;
 		this.password = password;
