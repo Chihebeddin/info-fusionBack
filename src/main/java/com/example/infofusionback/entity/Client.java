@@ -22,7 +22,7 @@ public class Client extends User {
 	private Date birthdate;
 
 	@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "id", referencedColumnName = "id")
+	@JoinColumn(name = "client_id", referencedColumnName = "id")
 	private User user;
 
 	public Client() {

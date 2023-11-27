@@ -25,7 +25,7 @@ public class Shop extends User {
 	private String closingTime;
 
 	@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "id", referencedColumnName = "id")
+	@JoinColumn(name = "shop_id", referencedColumnName = "id")
 	private User user;
 	
 	
