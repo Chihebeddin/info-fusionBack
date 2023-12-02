@@ -24,23 +24,23 @@ public class Shop extends User {
 	@Column
 	private String closingTime;
 
-	@OneToOne(cascade = CascadeType.REMOVE)
+	/*@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "shop_id", referencedColumnName = "id")
-	private User user;
+	private User user;*/
 	
 	
 	public Shop() {
 
 	}
 
-	public Shop(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String name, String location, int phone, String openingTime, String closingTime, User user) {
-		super(id, email, password, d, role, client, shop);
+	public Shop(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String name, String location, int phone, String openingTime, String closingTime/*, User user*/) {
+		super(id, email, password, d, role/*, client, shop*/);
 		this.name = name;
 		this.location = location;
 		this.phone = phone;
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
-		this.user = user;
+		//this.user = user;
 	}
 
 	public String getName() {
@@ -83,11 +83,11 @@ public class Shop extends User {
 		this.location = location;
 	}
 
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
 }

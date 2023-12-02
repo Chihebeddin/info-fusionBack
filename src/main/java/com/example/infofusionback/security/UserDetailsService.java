@@ -6,20 +6,22 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.example.infofusionback.entity.User;
 import com.example.infofusionback.service.UserService;
 
 import java.util.Optional;
 
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDetailsService implements UserDetailsServiceInterface {
 
 
-	public static UserDetailsService create(UserService userService) {
-        return new UserDetailsService(userService);
+    private UserService userService;
+
+    public UserDetailsService(UserService userService) {
+        this.userService = userService;
     }
 
-    private UserService userService;
+    public static UserDetailsService create(UserService userService) {
+        return new UserDetailsService(userService);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

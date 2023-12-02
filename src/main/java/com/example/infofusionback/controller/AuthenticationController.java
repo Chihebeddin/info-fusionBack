@@ -102,6 +102,7 @@ public class AuthenticationController {
         client.setLastName(clientSignupRequest.getLastName());
         client.setD(LocalDateTime.now());
         client.setBirthdate(clientSignupRequest.getBirthdate());
+        client.setRole("ROLE_CLIENT");
         client.setPhone(clientSignupRequest.getPhone());
         client = cs.saveClient(client);
         try{
@@ -140,6 +141,7 @@ public class AuthenticationController {
         shop.setD(LocalDateTime.now());
         shop.setLocation(shopSignupRequest.getLocation());
         shop.setPhone(shopSignupRequest.getPhone());
+        shop.setRole("ROLE_SHOP");
         shop = ss.saveShop(shop);
 
         try{

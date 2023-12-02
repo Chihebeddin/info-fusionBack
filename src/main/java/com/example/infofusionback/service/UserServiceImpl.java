@@ -1,6 +1,5 @@
 package com.example.infofusionback.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.example.infofusionback.entity.BO.UserBO;
@@ -16,18 +15,19 @@ import com.example.infofusionback.repository.UserRepository;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserConverter userConverter;
 
-    public static UserServiceImpl create(final UserRepository userRepository, final UserConverter userConverter) {
-        return new UserServiceImpl(userRepository, userConverter);
-    }
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserConverter userConverter;
 
     @Override
     public UserBO saveUser(UserBO userBO) {
         User user = userRepository.saveAndFlush(userConverter.convertToEntity(userBO));
         return userConverter.convertToBO(user);
     }
+
     @Override
     public Optional<UserBO> findUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
@@ -51,5 +51,5 @@ public class UserServiceImpl implements UserService {
 
 
 
-	
+
 }

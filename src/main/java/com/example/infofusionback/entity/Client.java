@@ -16,26 +16,26 @@ public class Client extends User {
 	private String lastName;
 	
 	@Column
-	private int phone ;
+	private String phone ;
 	
 	@Column
 	private Date birthdate;
 
-	@OneToOne(cascade = CascadeType.REMOVE)
+	/*@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "client_id", referencedColumnName = "id")
-	private User user;
+	private User user;*/
 
 	public Client() {
 
 	}
 
-	public Client(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String firstName, String lastName, int phone, Date birthdate, User user) {
-		super(id, email, password, d, role, client, shop);
+	public Client(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String firstName, String lastName, String phone, Date birthdate/*, User user*/) {
+		super(id, email, password, d, role/*, client, shop*/);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.birthdate = birthdate;
-		this.user = user;
+		//this.user = user;
 	}
 
 	public String getFirstName() {
@@ -54,11 +54,11 @@ public class Client extends User {
 		this.lastName = lastName;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -70,11 +70,11 @@ public class Client extends User {
 		this.birthdate = birthdate;
 	}
 
-	public User getUser() {
+	/*public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
+	}*/
 }

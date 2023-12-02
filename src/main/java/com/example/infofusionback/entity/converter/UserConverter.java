@@ -19,7 +19,7 @@ public class UserConverter extends AbstractBOEntityConverter<User, UserBO> {
         user.setId(userBO.getId());
         user.setD(userBO.getD());
         user.setPassword(userBO.getPassword());
-        user.setEmail(userBO.getEmail());
+        user.setEmail(userBO.getUsername());
         user.setRole(userBO.getRole());
 
         return user;
