@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,8 +20,10 @@ import java.io.IOException;
 @Component
 @AllArgsConstructor
 public class JwtTokenFilter  extends OncePerRequestFilter {
-
+    @Autowired
     private UserDetailsServiceInterface userDetailsService;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     public JwtTokenFilter() {
@@ -38,6 +41,8 @@ public class JwtTokenFilter  extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
+                System.out.print("hello ");
+                System.out.println(jwtToken);
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");

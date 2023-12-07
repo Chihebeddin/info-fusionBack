@@ -11,12 +11,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserBO implements UserDetails {
-	
+
     private String role;
     private Long id;
     private String email;
@@ -39,54 +42,54 @@ public class UserBO implements UserDetails {
         authorities.add(new SimpleGrantedAuthority(role));
         return Collections.unmodifiableCollection(authorities);
     }
-    
-    
+
+
 
     public String getRole() {
-		return role;
-	}
+        return role;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	@Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
     public String getUsername() {
         return this.getEmail();
     }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public LocalDateTime getD() {
-		return d;
-	}
+    public LocalDateTime getD() {
+        return d;
+    }
 
-	public void setD(LocalDateTime d) {
-		this.d = d;
-	}
-    
+    public void setD(LocalDateTime d) {
+        this.d = d;
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {

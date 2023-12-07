@@ -15,11 +15,11 @@ import com.example.infofusionback.repository.UserRepository;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Service
 public class UserServiceImpl implements UserService {
-	
-	@Autowired
+
+    @Autowired
     private UserRepository userRepository;
-	
-	@Autowired
+
+    @Autowired
     private UserConverter userConverter;
 
     @Override
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.saveAndFlush(userConverter.convertToEntity(userBO));
         return userConverter.convertToBO(user);
     }
-    
+
     @Override
     public Optional<UserBO> findUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
@@ -51,5 +51,5 @@ public class UserServiceImpl implements UserService {
 
 
 
-	
+
 }

@@ -16,7 +16,7 @@ public class ClientSignupRequest {
 	
 	private String firstName;
 	private String lastName;
-	private int phone ;
+	private String phone ;
 	private Date birthdate;
 	private String email;
     private LocalDateTime d;
@@ -37,10 +37,10 @@ public class ClientSignupRequest {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public Date getBirthdate() {

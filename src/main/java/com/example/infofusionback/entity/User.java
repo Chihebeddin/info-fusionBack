@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import  com.example.infofusionback.entity.*;
 
 
 
@@ -14,7 +15,7 @@ import jakarta.validation.constraints.Size;
 @Inheritance (strategy = InheritanceType.JOINED )
 @Table(	name = "users", 
 uniqueConstraints = { 
-		@UniqueConstraint(columnNames = "email") 
+	@UniqueConstraint(columnNames = "email") 
 })
 public class User {
 	@Id
@@ -32,33 +33,33 @@ public class User {
 	@NotBlank
 	@Size(max = 120)
 	private String password;
-
+	
 	@Column
-	private LocalDateTime d;
+    private LocalDateTime d;
+	
+	@Column(name = "role")
+	  private String role;
 
-	@Column(name = "role", nullable = false, columnDefinition = "varchar(255) default 'ROLE_CLIENT'", insertable = false)
-	private String role;
-
-	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+	/*@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Client client;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private Shop shop;
+	private Shop shop;*/
 
+	
+	 public User() {
+	
+		}
 
-	public User() {
-
-	}
-
-	public User(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop) {
-		super();
+	public User(Long id, String email, String password, LocalDateTime d, String role/*, Client client, Shop shop*/) {
+	 	super();
 		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.d = d;
 		this.role = role;
-		this.client = client;
-		this.shop = shop;
+		//this.client = client;
+		//this.shop = shop;
 	}
 
 	public Long getId() {
@@ -101,7 +102,7 @@ public class User {
 		this.role = role;
 	}
 
-	public Client getClient() {
+	/*public Client getClient() {
 		return client;
 	}
 
@@ -115,5 +116,5 @@ public class User {
 
 	public void setShop(Shop shop) {
 		this.shop = shop;
-	}
+	}*/
 }

@@ -10,17 +10,16 @@ import com.example.infofusionback.service.UserService;
 
 import java.util.Optional;
 
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDetailsService implements UserDetailsServiceInterface {
 
 
     private UserService userService;
-    
-    public UserDetailsService(UserService userService) {
-		this.userService = userService;
-	}
 
-	public static UserDetailsService create(UserService userService) {
+    public UserDetailsService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public static UserDetailsService create(UserService userService) {
         return new UserDetailsService(userService);
     }
 
