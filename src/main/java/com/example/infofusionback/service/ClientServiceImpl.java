@@ -13,6 +13,7 @@ import com.example.infofusionback.repository.ClientRepository;
 
 @Service
 public class ClientServiceImpl implements ClientService {
+	
     private final ClientRepository clientRepository;
 
     @Autowired
@@ -26,8 +27,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClientById(Long id) {
-        return clientRepository.findById(id).orElse(null);
+    public Client getClientById(long id) {
+        return this.clientRepository.findById(id);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteClient(Long id) {
+    public void deleteClient(long id) {
         clientRepository.deleteById(id);
     }
 

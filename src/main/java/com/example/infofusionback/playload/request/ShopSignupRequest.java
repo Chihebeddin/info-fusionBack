@@ -15,7 +15,7 @@ public class ShopSignupRequest {
 
     private String name;
     private String location;
-    private int phone ;
+    private String phone ;
     private String openingTime;
     private String closingTime;
     private String email;
@@ -40,11 +40,11 @@ public class ShopSignupRequest {
         this.location = location;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

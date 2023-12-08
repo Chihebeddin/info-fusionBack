@@ -48,7 +48,9 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+
     private JwtTokenUtil jwtTokenUtil;
+    
     @Autowired
     private UserDetailsServiceInterface userDetailsService;
 
@@ -57,6 +59,7 @@ public class AuthenticationController {
 
     @Autowired
     private ClientService cs;
+
     @Autowired
     private ShopService ss;
 
@@ -69,6 +72,7 @@ public class AuthenticationController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ClientService clientService;
+
 
     @RequestMapping(value = "/SignInClient", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {

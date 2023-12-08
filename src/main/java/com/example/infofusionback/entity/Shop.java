@@ -1,47 +1,51 @@
 package com.example.infofusionback.entity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import jakarta.persistence.*;
 
 @Entity
-@PrimaryKeyJoinColumn ( name =" id ")
+@PrimaryKeyJoinColumn ( name ="id_user")
 public class Shop extends User {
-	
+
 	@Column
 	private String name;
-	
+
 	@Column
 	private String location;
-	
+
 	@Column
-	private int phone ;
-	
+	private String phone ;
+
 	@Column
 	private String openingTime;
-	
+
 	@Column
 	private String closingTime;
 
 	/*@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "shop_id", referencedColumnName = "id")
 	private User user;*/
-	
-	
+
+
 	public Shop() {
 
 	}
 
-	public Shop(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String name, String location, int phone, String openingTime, String closingTime/*, User user*/) {
-		super(id, email, password, d, role/*, client, shop*/);
+	/*
+	public Shop(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String name, String location, int phone, String openingTime, String closingTime/*, User user) {
+		super(id, email, password, d, role/*, client, shop);
 		this.name = name;
 		this.location = location;
 		this.phone = phone;
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
 		//this.user = user;
-	}
+	}*/
+	
+	public Shop(String email, String password, LocalDateTime d, String role) {
+			super(email, password, d, role);
+		}
 
 	public String getName() {
 		return name;
@@ -59,11 +63,11 @@ public class Shop extends User {
 		this.openingTime = openingTime;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 

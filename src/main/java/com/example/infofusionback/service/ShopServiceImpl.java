@@ -23,8 +23,8 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop getShopById(Long id) {
-        return shopRepository.findById(id).orElse(null);
+    public Shop getShopById(long id) {
+        return shopRepository.findById(id);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public void deleteShop(Long id) {
+    public void deleteShop(long id) {
     	shopRepository.deleteById(id);
     }
 }

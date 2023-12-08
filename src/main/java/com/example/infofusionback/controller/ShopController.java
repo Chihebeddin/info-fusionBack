@@ -18,36 +18,37 @@ import com.example.infofusionback.service.ShopService;
 @RestController
 @RequestMapping("/shops")
 public class ShopController {
-    private final ShopService shopService;
 
-    @Autowired
-    public ShopController(ShopService shopService) {
-        this.shopService = shopService;
-    }
+	private final ShopService shopService;
 
-    @PostMapping
-    public Shop createShop(@RequestBody Shop shop) {
-        return shopService.saveShop(shop);
-    }
+	@Autowired
+	public ShopController(ShopService shopService) {
+		this.shopService = shopService;
+	}
 
-    @GetMapping("/{id}")
-    public Shop getShopById(@PathVariable Long id) {
-        return shopService.getShopById(id);
-    }
+	@PostMapping
+	public Shop createShop(@RequestBody Shop shop) {
+		return shopService.saveShop(shop);
+	}
 
-    @GetMapping
-    public List<Shop> getAllShops() {
-        return shopService.getAllShops();
-    }
+	@GetMapping("/{id}")
+	public Shop getShopById(@PathVariable Long id) {
+		return shopService.getShopById(id);
+	}
 
-    @PutMapping("/{id}")
-    public Shop updateShop(@PathVariable Long id, @RequestBody Shop shop) {
-    	shop.setId(id);
-        return shopService.saveShop(shop);
-    }
+	@GetMapping
+	public List<Shop> getAllShops() {
+		return shopService.getAllShops();
+	}
 
-    @DeleteMapping("/{id}")
-    public void deleteShop(@PathVariable Long id) {
-    	shopService.deleteShop(id);
-    }
+	@PutMapping("/{id}")
+	public Shop updateShop(@PathVariable Long id, @RequestBody Shop shop) {
+		shop.setId(id);
+		return shopService.saveShop(shop);
+	}
+
+	@DeleteMapping("/{id}")
+	public void deleteShop(@PathVariable Long id) {
+		shopService.deleteShop(id);
+	}
 }
