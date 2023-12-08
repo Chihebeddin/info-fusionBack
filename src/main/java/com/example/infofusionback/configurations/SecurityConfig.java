@@ -1,21 +1,16 @@
 package com.example.infofusionback.configurations;
 
-import com.example.infofusionback.entity.BO.UserBO;
 import com.example.infofusionback.entity.converter.UserConverter;
 import com.example.infofusionback.security.UserDetailsService;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
 import com.example.infofusionback.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.infofusionback.security.jwt.JwtTokenFilter;
-import com.example.infofusionback.security.jwt.JwtTokenUtil;
 import com.example.infofusionback.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,14 +18,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -82,6 +75,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/clients/**").permitAll()
+                                .requestMatchers("/shops/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
