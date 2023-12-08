@@ -18,6 +18,8 @@ import com.example.infofusionback.service.ClientService;
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
+	
+	
     private final ClientService clientService;
 
     @Autowired
