@@ -4,7 +4,6 @@ import com.example.infofusionback.entity.BO.UserBO;
 import com.example.infofusionback.entity.Shop;
 import java.lang.String;
 
-import com.example.infofusionback.entity.User;
 import com.example.infofusionback.entity.dto.UserDTO;
 import com.example.infofusionback.playload.request.ShopSignupRequest;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,22 +47,32 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
+	@Autowired
     private AuthenticationManager authenticationManager;
+	
+	@Autowired
     private JwtTokenUtil jwtTokenUtil;
+    
     @Autowired
     private UserDetailsServiceInterface userDetailsService;
 
     @Autowired
     private EmailSenderService emailService;
     
+    @Autowired
     private ClientService cs;
+
+    @Autowired
     private ShopService ss;
 
     private String name;
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    
 
     @RequestMapping(value = "/SignInClient", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
