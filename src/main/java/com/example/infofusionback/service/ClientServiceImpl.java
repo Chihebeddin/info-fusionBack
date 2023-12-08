@@ -1,7 +1,10 @@
 package com.example.infofusionback.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.example.infofusionback.entity.BO.UserBO;
+import com.example.infofusionback.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteClient(long id) {
         clientRepository.deleteById(id);
+    }
+
+    @Override
+    public Client findClientByEmail(String email) {
+        Client client = clientRepository.findByEmail(email);
+        return client;
     }
 
 	

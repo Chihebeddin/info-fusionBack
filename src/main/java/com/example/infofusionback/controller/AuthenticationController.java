@@ -25,10 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.example.infofusionback.entity.Client;
 
 
@@ -47,10 +44,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-	@Autowired
+    @Autowired
     private AuthenticationManager authenticationManager;
-	
-	@Autowired
+
+    @Autowired
+
     private JwtTokenUtil jwtTokenUtil;
     
     @Autowired
@@ -58,7 +56,7 @@ public class AuthenticationController {
 
     @Autowired
     private EmailSenderService emailService;
-    
+
     @Autowired
     private ClientService cs;
 
@@ -72,7 +70,9 @@ public class AuthenticationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+    @Autowired
+    private ClientService clientService;
+
 
     @RequestMapping(value = "/SignInClient", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
@@ -82,6 +82,7 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
+
 
     private void authenticate(String email, String password) throws Exception {
 
@@ -129,6 +130,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+    @GetMapping("/current")
+    public Optional<UserBO> getUser(Authentication authentication) {
+        System.out.println("OOOOOOOO "+authentication.getName());
+        Optional<UserBO> user = userService.findUserByEmail(authentication.getName());
+        return user;
+    }
     @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody ShopSignupRequest shopSignupRequest) throws Exception {
         if (userService.findUserByEmail(shopSignupRequest.getEmail()).isPresent()) {
