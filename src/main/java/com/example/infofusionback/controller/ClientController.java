@@ -1,16 +1,13 @@
 package com.example.infofusionback.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.example.infofusionback.entity.BO.UserBO;
+import com.example.infofusionback.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.infofusionback.entity.Client;
 import com.example.infofusionback.service.ClientService;
@@ -18,11 +15,15 @@ import com.example.infofusionback.service.ClientService;
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
+    @Autowired
     private final ClientService clientService;
+    @Autowired
+    private final UserService userService;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, UserService userService) {
         this.clientService = clientService;
+        this.userService = userService;
     }
 
     @PostMapping
@@ -30,10 +31,12 @@ public class ClientController {
         return clientService.saveClient(client);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value ="/client/{id}")
     public Client getClientById(@PathVariable Long id) {
         return clientService.getClientById(id);
     }
+
+
 
     @GetMapping
     public List<Client> getAllClients() {
