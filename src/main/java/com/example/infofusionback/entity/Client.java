@@ -6,18 +6,18 @@ import java.util.Date;
 import jakarta.persistence.*;
 
 @Entity
-@PrimaryKeyJoinColumn ( name =" id ")
+@PrimaryKeyJoinColumn ( name ="id_user")
 public class Client extends User {
-	
+
 	@Column
 	private String firstName;
-	
+
 	@Column
 	private String lastName;
-	
+
 	@Column
 	private String phone ;
-	
+
 	@Column
 	private Date birthdate;
 
@@ -29,13 +29,18 @@ public class Client extends User {
 
 	}
 
-	public Client(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String firstName, String lastName, String phone, Date birthdate/*, User user*/) {
-		super(id, email, password, d, role/*, client, shop*/);
+	/*
+	public Client(Long id, String email, String password, LocalDateTime d, String role,String firstName, String lastName, String phone, Date birthdate/*, User user) {
+		super(id, email, password, d, role/*, client, shop);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.birthdate = birthdate;
 		//this.user = user;
+	}*/
+
+	public Client(String email, String password, LocalDateTime d, String role) {
+		super(email, password, d, role);
 	}
 
 	public String getFirstName() {
