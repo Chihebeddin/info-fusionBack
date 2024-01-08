@@ -23,25 +23,10 @@ public class Shop extends User {
 	@Column
 	private String closingTime;
 
-	/*@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "shop_id", referencedColumnName = "id")
-	private User user;*/
-
 
 	public Shop() {
 
 	}
-
-	/*
-	public Shop(Long id, String email, String password, LocalDateTime d, String role, Client client, Shop shop, String name, String location, int phone, String openingTime, String closingTime/*, User user) {
-		super(id, email, password, d, role/*, client, shop);
-		this.name = name;
-		this.location = location;
-		this.phone = phone;
-		this.openingTime = openingTime;
-		this.closingTime = closingTime;
-		//this.user = user;
-	}*/
 	
 	public Shop(String email, String password, LocalDateTime d, String role) {
 			super(email, password, d, role);

@@ -21,23 +21,10 @@ public class Client extends User {
 	@Column
 	private Date birthdate;
 
-	/*@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "client_id", referencedColumnName = "id")
-	private User user;*/
 
 	public Client() {
 
 	}
-
-	/*
-	public Client(Long id, String email, String password, LocalDateTime d, String role,String firstName, String lastName, String phone, Date birthdate/*, User user) {
-		super(id, email, password, d, role/*, client, shop);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phone = phone;
-		this.birthdate = birthdate;
-		//this.user = user;
-	}*/
 
 	public Client(String email, String password, LocalDateTime d, String role) {
 		super(email, password, d, role);

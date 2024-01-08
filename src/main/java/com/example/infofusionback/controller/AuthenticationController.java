@@ -50,7 +50,7 @@ public class AuthenticationController {
     @Autowired
 
     private JwtTokenUtil jwtTokenUtil;
-    
+
     @Autowired
     private UserDetailsServiceInterface userDetailsService;
 
@@ -89,7 +89,7 @@ public class AuthenticationController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         String username = userDetails.getUsername();
 
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
     }
 
@@ -182,4 +182,3 @@ public class AuthenticationController {
         return user.map(value -> ResponseEntity.ok(new UserDTO(value))).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 }
-
