@@ -22,6 +22,10 @@ public class Shop extends User {
 
 	@Column
 	private String closingTime;
+	
+	@Column
+	@Enumerated(EnumType.STRING)
+	private ShopType shopType;
 
 
 	public Shop() {
@@ -72,11 +76,13 @@ public class Shop extends User {
 		this.location = location;
 	}
 
-	/*public User getUser() {
-		return user;
+	public ShopType getShopType() {
+		return shopType;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}*/
+	public void setShopType(ShopType shopType) {
+		this.shopType = shopType;
+	}
+
+	
 }
