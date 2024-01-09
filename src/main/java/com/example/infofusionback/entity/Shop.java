@@ -1,6 +1,8 @@
 package com.example.infofusionback.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -22,10 +24,13 @@ public class Shop extends User {
 
 	@Column
 	private String closingTime;
-	
-	@Column
-	@Enumerated(EnumType.STRING)
-	private ShopType shopType;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(	name = "shops_types",
+			joinColumns = @JoinColumn(name = "id_user"),
+			inverseJoinColumns = @JoinColumn(name = "id_shoptype"))
+	private Set<ShopType> shopTypes = new HashSet<>();
+
 
 
 	public Shop() {
@@ -33,8 +38,19 @@ public class Shop extends User {
 	}
 	
 	public Shop(String email, String password, LocalDateTime d, String role) {
-			super(email, password, d, role);
+		super(email, password, d, role);
 		}
+
+
+	public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopTypes) {
+		super(email, password, d, role);
+		this.name = name;
+		this.location = location;
+		this.phone = phone;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+		this.shopTypes = shopTypes;
+	}
 
 	public String getName() {
 		return name;
@@ -76,13 +92,11 @@ public class Shop extends User {
 		this.location = location;
 	}
 
-	public ShopType getShopType() {
-		return shopType;
+	public Set<ShopType> getShopTypes() {
+		return shopTypes;
 	}
 
-	public void setShopType(ShopType shopType) {
-		this.shopType = shopType;
+	public void setShopTypes(Set<ShopType> shopTypes) {
+		this.shopTypes = shopTypes;
 	}
-
-	
 }

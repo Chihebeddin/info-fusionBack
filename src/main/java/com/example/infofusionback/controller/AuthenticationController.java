@@ -1,11 +1,14 @@
 package com.example.infofusionback.controller;
 
 import com.example.infofusionback.entity.BO.UserBO;
+import com.example.infofusionback.entity.EShopType;
 import com.example.infofusionback.entity.Shop;
 import java.lang.String;
 
+import com.example.infofusionback.entity.ShopType;
 import com.example.infofusionback.entity.dto.UserDTO;
 import com.example.infofusionback.playload.request.ShopSignupRequest;
+import com.example.infofusionback.repository.ShopTypeRepository;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
 import com.example.infofusionback.service.EmailSenderService;
 import com.example.infofusionback.service.ShopService;
@@ -15,7 +18,9 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,6 +78,8 @@ public class AuthenticationController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private ShopTypeRepository shopTypeRepository;
 
     @RequestMapping(value = "/SignInClient", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
@@ -147,6 +154,43 @@ public class AuthenticationController {
         }
 
         Shop shop = new Shop();
+
+        Set<String> ShopType = shopSignupRequest.getShopType();
+        Set<ShopType> types = new HashSet<>();
+
+        if (ShopType == null) {
+            ShopType shopType = shopTypeRepository.findByType(EShopType.Boucher)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            types.add(shopType);
+        } else {
+            ShopType.forEach(type -> {
+                switch (type) {
+                    case "Fleuriste":
+                        ShopType adminRole = shopTypeRepository.findByType(EShopType.Fleuriste)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        types.add(adminRole);
+
+                        break;
+                    case "Epicerie":
+                        ShopType modRole = shopTypeRepository.findByType(EShopType.Epicerie)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        types.add(modRole);
+
+                        break;
+                    case "Boulanger":
+                        ShopType SecRole = shopTypeRepository.findByType(EShopType.Boulanger)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        types.add(SecRole);
+
+                        break;
+                    default:
+                        ShopType userRole = shopTypeRepository.findByType(EShopType.Boucher)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        types.add(userRole);
+                }
+            });
+        }
+
         shop.setEmail(shopSignupRequest.getEmail());
         shop.setRole(shopSignupRequest.getRole());
         shop.setPassword(passwordEncoder.encode(shopSignupRequest.getPassword()));
@@ -157,6 +201,7 @@ public class AuthenticationController {
         shop.setLocation(shopSignupRequest.getLocation());
         shop.setPhone(shopSignupRequest.getPhone());
         shop.setRole("ROLE_SHOP");
+        shop.setShopTypes(types);
         shop = ss.saveShop(shop);
 
         try{

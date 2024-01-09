@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,8 +22,12 @@ public class ShopSignupRequest {
     private String email;
     private LocalDateTime d;
     private String role;
+
+    private Set<String> shopType;
     private String password;
     private String confirmPassword;
+
+
 
     public String getName() {
         return name;
@@ -102,5 +107,13 @@ public class ShopSignupRequest {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public Set<String> getShopType() {
+        return shopType;
+    }
+
+    public void setShopType(Set<String> shopType) {
+        this.shopType = shopType;
     }
 }
