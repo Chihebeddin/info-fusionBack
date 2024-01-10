@@ -159,6 +159,7 @@ public class AuthenticationController {
         Set<ShopType> types = new HashSet<>();
 
         if (ShopType == null) {
+            System.out.println("kjlkjljhjhjhohohljhl");
             ShopType shopType = shopTypeRepository.findByType(EShopType.Boucher)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             types.add(shopType);
@@ -201,7 +202,7 @@ public class AuthenticationController {
         shop.setLocation(shopSignupRequest.getLocation());
         shop.setPhone(shopSignupRequest.getPhone());
         shop.setRole("ROLE_SHOP");
-        shop.setShopTypes(types);
+        shop.setShopType(types);
         shop = ss.saveShop(shop);
 
         try{

@@ -29,7 +29,7 @@ public class Shop extends User {
 	@JoinTable(	name = "shops_types",
 			joinColumns = @JoinColumn(name = "id_user"),
 			inverseJoinColumns = @JoinColumn(name = "id_shoptype"))
-	private Set<ShopType> shopTypes = new HashSet<>();
+	private Set<ShopType> shopType = new HashSet<>();
 
 
 
@@ -42,14 +42,14 @@ public class Shop extends User {
 		}
 
 
-	public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopTypes) {
+	public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopType) {
 		super(email, password, d, role);
 		this.name = name;
 		this.location = location;
 		this.phone = phone;
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
-		this.shopTypes = shopTypes;
+		this.shopType = shopType;
 	}
 
 	public String getName() {
@@ -92,11 +92,11 @@ public class Shop extends User {
 		this.location = location;
 	}
 
-	public Set<ShopType> getShopTypes() {
-		return shopTypes;
+	public Set<ShopType> getShopType() {
+		return shopType;
 	}
 
-	public void setShopTypes(Set<ShopType> shopTypes) {
-		this.shopTypes = shopTypes;
+	public void setShopType(Set<ShopType> shopType) {
+		this.shopType = shopType;
 	}
 }

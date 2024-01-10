@@ -3,8 +3,8 @@ package com.example.infofusionback.entity;
 import jakarta.persistence.*;
 
 
-@Entity(name = "shoptypes")
-@Table(name = "shoptypes")
+@Entity(name = "shoptype")
+@Table(name = "shoptype")
 public class ShopType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,9 @@ public class ShopType {
     @Column(length = 20)
     private EShopType type;
 
+    public ShopType() {
 
+    }
     public ShopType(Integer id, EShopType type) {
         this.id = id;
         this.type = type;
