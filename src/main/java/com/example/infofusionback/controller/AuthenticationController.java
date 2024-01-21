@@ -81,7 +81,7 @@ public class AuthenticationController {
     @Autowired
     private ShopTypeRepository shopTypeRepository;
 
-    @RequestMapping(value = "/SignInClient", method = RequestMethod.POST)
+    @RequestMapping(value = "/SignIn", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService
