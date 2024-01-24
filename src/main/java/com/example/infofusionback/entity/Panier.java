@@ -1,10 +1,9 @@
 package com.example.infofusionback.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -53,5 +52,10 @@ import java.util.Date;
     public Panier() {
     }
 
+    @ManyToOne
+    @JoinColumn(name="id_user" )
+    private Client client;
 
+    @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL)
+    private List<Catalogue> catalogues;
 }

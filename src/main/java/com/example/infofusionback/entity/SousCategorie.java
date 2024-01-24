@@ -1,9 +1,9 @@
 package com.example.infofusionback.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 
@@ -28,4 +28,12 @@ public class SousCategorie {
 
     public SousCategorie() {
     }
+
+    @OneToMany(mappedBy = "sousCategorie" , cascade = CascadeType.ALL)
+    private List<Produit> produits ;
+
+
+    @ManyToOne
+    @JoinColumn (name = "id_categorie")
+    private Categorie categorie;
 }

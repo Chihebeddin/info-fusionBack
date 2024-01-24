@@ -1,8 +1,6 @@
 package com.example.infofusionback.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 
 @Entity
 
@@ -50,4 +48,12 @@ public class Catalogue {
 
     public Catalogue() {
     }
+
+    @ManyToOne
+    @JoinColumn(name="id_panier")
+    private Panier panier;
+
+    @OneToOne
+    @JoinColumn(name="id_produit")
+    private Produit produit ;
 }

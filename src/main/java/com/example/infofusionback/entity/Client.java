@@ -69,4 +69,7 @@ public class Client extends User {
 	public void setUser(User user) {
 		this.user = user;
 	}*/
+
+	@OneToOne(mappedBy = "client" , cascade = CascadeType.ALL)
+	private Panier panier;
 }
