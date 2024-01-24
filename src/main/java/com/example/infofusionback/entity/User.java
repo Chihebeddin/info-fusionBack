@@ -38,12 +38,6 @@ public class User {
 	@Column(name = "role")
 	private String role;
 
-	/*@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private Client client;
-
-	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private Shop shop;*/
-
 
 	public User() {
 

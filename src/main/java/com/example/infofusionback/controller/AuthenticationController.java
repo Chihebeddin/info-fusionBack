@@ -1,24 +1,28 @@
 package com.example.infofusionback.controller;
 
+import com.example.infofusionback.entity.*;
 import com.example.infofusionback.entity.BO.UserBO;
-import com.example.infofusionback.entity.EShopType;
-import com.example.infofusionback.entity.Shop;
+
+import java.io.ByteArrayOutputStream;
 import java.lang.String;
 
-import com.example.infofusionback.entity.ShopType;
 import com.example.infofusionback.entity.dto.UserDTO;
 import com.example.infofusionback.playload.request.ShopSignupRequest;
 import com.example.infofusionback.repository.ShopTypeRepository;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
-import com.example.infofusionback.service.EmailSenderService;
-import com.example.infofusionback.service.ShopService;
-import com.example.infofusionback.service.UserService;
+import com.example.infofusionback.service.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,7 +35,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.example.infofusionback.entity.Client;
 
 
 import com.example.infofusionback.playload.request.LoginRequest;
@@ -39,7 +42,6 @@ import com.example.infofusionback.playload.request.ClientSignupRequest;
 import com.example.infofusionback.playload.response.MessageResponse;
 import com.example.infofusionback.security.jwt.JwtResponse;
 import com.example.infofusionback.security.jwt.JwtTokenUtil;
-import com.example.infofusionback.service.ClientService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -67,6 +69,8 @@ public class AuthenticationController {
 
     @Autowired
     private ShopService ss;
+    @Autowired
+    private FidelityCardService fs;
 
     private String name;
 
@@ -121,6 +125,15 @@ public class AuthenticationController {
         client.setRole("ROLE_CLIENT");
         client.setPhone(clientSignupRequest.getPhone());
         client = cs.saveClient(client);
+
+        FidelityCard fidelityCard = new FidelityCard();
+        fidelityCard.setNbPoints(0);
+        fidelityCard.setSolde(0.0);
+        fidelityCard.setDatePoints(LocalDateTime.now());
+        fidelityCard.setQrCodePath(generateQRCode(client.getId())); // Utilisez le tableau de bytes au lieu du chemin
+
+        // Enregistrez le FidelityCard associé au client
+        fidelityCard = fs.saveFidelityCard(fidelityCard);
         try{
             name="Hello "+clientSignupRequest.getLastName();
 
@@ -137,11 +150,25 @@ public class AuthenticationController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+    private byte[] generateQRCode(Long clientId) throws Exception {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(clientId.toString(), BarcodeFormat.QR_CODE, 300, 300);
+
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+
+        return outputStream.toByteArray();
+    }
     @GetMapping("/current")
     public Optional<UserBO> getUser(Authentication authentication) {
         System.out.println("OOOOOOOO "+authentication.getName());
         Optional<UserBO> user = userService.findUserByEmail(authentication.getName());
         return user;
+    }
+
+    @GetMapping("/fidelitycard")
+    public List<FidelityCard> getFidelityCards() {
+        return fs.getAllFidelityCards();
     }
     @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody ShopSignupRequest shopSignupRequest) throws Exception {

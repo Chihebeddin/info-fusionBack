@@ -22,6 +22,7 @@ public class Client extends User {
 	private Date birthdate;
 
 
+
 	public Client() {
 
 	}

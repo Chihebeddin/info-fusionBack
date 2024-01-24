@@ -44,7 +44,7 @@ public class InfoFusionBackApplication {
 		};
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
 			generateClientData();
@@ -88,6 +88,6 @@ public class InfoFusionBackApplication {
 			shop.setClosingTime(closingTime.toString());
 			ss.saveShop(shop);
 		}
-	}
+	}*/
 
 }
