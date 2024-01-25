@@ -2,9 +2,11 @@ package com.example.infofusionback;
 
 import com.example.infofusionback.entity.Client;
 import com.example.infofusionback.entity.EShopType;
+import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
 import com.example.infofusionback.entity.ShopType;
 import com.example.infofusionback.service.ClientService;
+import com.example.infofusionback.service.ProductService;
 import com.example.infofusionback.service.ShopService;
 import com.example.infofusionback.service.ShopTypeService;
 import com.github.javafaker.Faker;
@@ -18,14 +20,22 @@ import org.springframework.context.annotation.ComponentScan;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class InfoFusionBackApplication {
+	
 	@Autowired
 	private ClientService cs;
+	
 	@Autowired
 	private ShopService ss;
+	
+	@Autowired
+	protected ProductService ps;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(InfoFusionBackApplication.class, args);
 	}
@@ -47,11 +57,13 @@ public class InfoFusionBackApplication {
 	/*@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
-			generateClientData();
-			generateShopData();
+			//generateClientData();
+			//generateShopData();
+			this.generateProductData();
 		};
 	}
 
+	
 	private void generateClientData() {
 		Faker faker = new Faker();
 
@@ -88,6 +100,72 @@ public class InfoFusionBackApplication {
 			shop.setClosingTime(closingTime.toString());
 			ss.saveShop(shop);
 		}
+	}
+	
+	private void generateProductData() {
+		Faker faker = new Faker(new Locale("fr")); 
+		List<Shop> shops = ss.getAllShops();
+		
+		for (int i = 0; i <= 10; i++) {
+			Product prd = new Product();
+			Shop shop = this.getRandomShop(shops);
+			
+			prd.setName(faker.beer().name());
+			prd.setQuantity(faker.number().numberBetween(10, 100));
+			prd.setPrice(faker.number().randomDouble(2, 2, 10));
+			prd.setShop(shop);
+			
+			this.ps.addProduct(prd, shop);
+		}
+		for (int i = 0; i <= 10; i++) {
+			Product prd = new Product();
+			Shop shop = this.getRandomShop(shops);
+			
+			prd.setName(faker.food().fruit());
+			prd.setQuantity(faker.number().numberBetween(30, 100));
+			prd.setPrice(faker.number().randomDouble(2, 0, 3));
+			prd.setShop(shop);
+			
+			this.ps.addProduct(prd, shop);
+		}
+		for (int i = 0; i <= 20; i++) {
+			Product prd = new Product();
+			Shop shop = this.getRandomShop(shops);
+			
+			prd.setName(faker.food().vegetable());
+			prd.setQuantity(faker.number().numberBetween(50, 150));
+			prd.setPrice(faker.number().randomDouble(2, 0, 2));
+			prd.setShop(shop);
+			
+			this.ps.addProduct(prd, shop);
+		}
+		for (int i = 0; i <= 20; i++) {
+			Product prd = new Product();
+			Shop shop = this.getRandomShop(shops);
+			
+			prd.setName(faker.food().ingredient());
+			prd.setQuantity(faker.number().numberBetween(10, 50));
+			prd.setPrice(faker.number().randomDouble(2, 1, 10));
+			prd.setShop(shop);
+			
+			this.ps.addProduct(prd, shop);
+		}
+		for (int i = 0; i <= 20; i++) {
+			Product prd = new Product();
+			Shop shop = this.getRandomShop(shops);
+			
+			prd.setName(faker.food().spice());
+			prd.setQuantity(faker.number().numberBetween(10, 60));
+			prd.setPrice(faker.number().randomDouble(2, 1, 5));
+			prd.setShop(shop);
+			
+			this.ps.addProduct(prd, shop);
+		}
+	}
+	
+	private Shop getRandomShop(List<Shop> shops) {
+		int index = (int)Math.floor(Math.random() * ((shops.size()-1) - 0 + 1) + 0);
+		return shops.get(index);
 	}*/
 
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -99,4 +101,13 @@ public class Shop extends User {
 	public void setShopType(Set<ShopType> shopType) {
 		this.shopType = shopType;
 	}
+	
+	@OneToMany(mappedBy="shop", fetch=FetchType.EAGER)
+	@JsonIgnore
+	protected Set<Product> products = new HashSet<>();
+
+	public Set<Product> getProducts() { return products; }
+	public void addProduct(Product p) { this.products.add(p); }	
+	public void removeProduct(Product p) { this.products.remove(p); }
+	
 }
