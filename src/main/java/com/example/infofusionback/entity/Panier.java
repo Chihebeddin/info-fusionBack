@@ -8,53 +8,73 @@ import java.util.List;
 
 @Entity
     @PrimaryKeyJoinColumn( name ="id_panier")
-    public class Panier extends User {
+    public class Panier  {
+
+    @EmbeddedId
+    PanierId id;
+
+    public PanierId getId() {
+        return id;
+    }
+
+    public void setId(PanierId id) {
+        this.id = id;
+    }
+
+    public Client getClient(){
+        return getId().getClient();
+    }
+
+    public Product getProduct(){
+        return getId().getProduct();
+    }
+    public void setClient(Client client){
+        getId().setClient(client);
+    }
+    public void setProduct (Product product){
+        getId().setProduct(product);
+    }
+    @Column
+        private int quantite;
 
         @Column
-        private String libelle;
+        private Date dateAchat;
 
         @Column
-        private Date dateCreation ;
+        private String ModePaiement;
 
-        @Column
-        private Boolean valide;
 
-    public Panier(String libelle, Date dateCreation, Boolean valide) {
-        this.libelle = libelle;
-        this.dateCreation = dateCreation;
-        this.valide = valide;
+    public int getQuantite() {
+        return quantite;
     }
 
-    public String getLibelle() {
-        return libelle;
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
     }
 
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
+    public Date getDateAchat() {
+        return dateAchat;
     }
 
-    public Date getDateCreation() {
-        return dateCreation;
+    public void setDateAchat(Date dateAchat) {
+        this.dateAchat = dateAchat;
     }
 
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
+    public String getModePaiement() {
+        return ModePaiement;
     }
 
-    public Boolean getValide() {
-        return valide;
+    public void setModePaiement(String modePaiement) {
+        ModePaiement = modePaiement;
     }
 
-    public void setValide(Boolean valide) {
-        this.valide = valide;
+    public List<Catalogue> getCatalogues() {
+        return catalogues;
     }
 
-    public Panier() {
+    public void setCatalogues(List<Catalogue> catalogues) {
+        this.catalogues = catalogues;
     }
-
-    @ManyToOne
-    @JoinColumn(name="id_user" )
-    private Client client;
 
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL)
     private List<Catalogue> catalogues;

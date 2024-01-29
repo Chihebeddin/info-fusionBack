@@ -2,6 +2,8 @@ package com.example.infofusionback.entity;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -69,7 +71,16 @@ public class Client extends User {
 	public void setUser(User user) {
 		this.user = user;
 	}*/
+	@OneToMany
+	@JoinColumn(name="id.client")
+	private Set<Panier> paniers = new HashSet<Panier>();
+	public Set<Panier> getPaniers (){
+		return this.paniers;
+	}
 
+	public void setPaniers (Set <Panier> p) {
+		this.paniers=p;
+	}
 	@OneToOne(mappedBy = "client" , cascade = CascadeType.ALL)
 	private Panier panier;
 }

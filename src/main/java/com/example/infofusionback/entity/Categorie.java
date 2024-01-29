@@ -3,7 +3,9 @@ package com.example.infofusionback.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @PrimaryKeyJoinColumn ( name ="id_Categorie")
@@ -28,6 +30,22 @@ public class Categorie {
     public Categorie() {
     }
 
-    @OneToMany(mappedBy = "categorie" , cascade = CascadeType.ALL)
-    private List<SousCategorie> sousCategories;
+    @OneToMany
+    @JoinColumn(name = "id_product")
+    private Set<Product> products = new HashSet<Product>();
+
+    public Set<Product> getProducts() {
+        return this.products;
+
+    }
+
+    public void addProduct(Product p){
+        products.add(p);
+    }
+
+    public void removeProduct(Product p){
+        products.remove(p);
+    }
+
+
 }
