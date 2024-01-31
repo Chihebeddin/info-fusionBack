@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.infofusionback.entity.Category;
 import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
 
@@ -17,7 +18,7 @@ public interface ProductService {
 	
 	List<Product> productsByShop(long id);
 
-	void addProduct(Product product, Shop shop);
+	Product addProduct(Product product, Shop shop, Category ctg);
 
 	void deleteProduct(long id);
 

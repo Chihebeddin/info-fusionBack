@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -65,23 +67,13 @@ public class Client extends User {
 		this.birthdate = birthdate;
 	}
 
-	/*public User getUser() {
-		return user;
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<OrderEntity> orders = new HashSet<>();
+	
+	public Set<OrderEntity> getOrders() {
+		return this.orders;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}*/
-	@OneToMany
-	@JoinColumn(name="id.client")
-	private Set<Panier> paniers = new HashSet<Panier>();
-	public Set<Panier> getPaniers (){
-		return this.paniers;
-	}
-
-	public void setPaniers (Set <Panier> p) {
-		this.paniers=p;
-	}
-	@OneToOne(mappedBy = "client" , cascade = CascadeType.ALL)
-	private Panier panier;
+	public void addOrder(OrderEntity o) { this.orders.add(o); }
 }

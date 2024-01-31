@@ -102,7 +102,7 @@ public class Shop extends User {
 		this.shopType = shopType;
 	}
 	
-	@OneToMany(mappedBy="shop", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="shop", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonIgnore
 	protected Set<Product> products = new HashSet<>();
 

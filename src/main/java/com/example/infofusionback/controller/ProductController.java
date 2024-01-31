@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.infofusionback.entity.Category;
 import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
+import com.example.infofusionback.service.CategoryService;
 import com.example.infofusionback.service.ProductService;
 import com.example.infofusionback.service.ShopService;
 
@@ -27,6 +29,9 @@ public class ProductController {
 	
 	@Autowired
 	protected ShopService shopService;
+	
+	@Autowired
+	protected CategoryService ctgService;
 	
 	@GetMapping("/{id}")
 	public Product productById(@PathVariable long id) {
@@ -44,11 +49,13 @@ public class ProductController {
 	}
 	
 	@PostMapping("/create")
-	public Product createProduct(@RequestBody Product product, @RequestParam(value="shop")long shopId) {
-		Shop shop = shopService.getShopById(shopId);		
-		productService.addProduct(product, shop);
+	public Product createProduct(@RequestParam(value="shop")long shopId, @RequestParam(value="ctg")long ctgId,
+			@RequestBody Product product) {
+		Shop shop = shopService.getShopById(shopId);
+		Category ctg = ctgService.getCategoryById(ctgId);
 		
-		return product;
+		return productService.addProduct(product, shop, ctg);
+		
 	}
 	
 	@PutMapping("/{id}")

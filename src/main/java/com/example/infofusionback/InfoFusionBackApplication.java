@@ -1,10 +1,12 @@
 package com.example.infofusionback;
 
+import com.example.infofusionback.entity.Category;
 import com.example.infofusionback.entity.Client;
 import com.example.infofusionback.entity.EShopType;
 import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
 import com.example.infofusionback.entity.ShopType;
+import com.example.infofusionback.service.CategoryService;
 import com.example.infofusionback.service.ClientService;
 import com.example.infofusionback.service.ProductService;
 import com.example.infofusionback.service.ShopService;
@@ -36,6 +38,9 @@ public class InfoFusionBackApplication {
 	@Autowired
 	protected ProductService ps;
 	
+	@Autowired
+	protected CategoryService cts;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(InfoFusionBackApplication.class, args);
 	}
@@ -54,7 +59,7 @@ public class InfoFusionBackApplication {
 		};
 	}
 
-	/*@Bean
+	@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
 			//generateClientData();
@@ -90,7 +95,7 @@ public class InfoFusionBackApplication {
 			shop.setEmail(faker.internet().emailAddress());
 			shop.setPassword(faker.internet().password());
 			shop.setD(LocalDateTime.now());
-			shop.setRole("SHOP");
+			shop.setRole("ROLE_SHOP");
 			shop.setName(faker.company().name());
 			shop.setLocation(faker.address().fullAddress());
 			shop.setPhone(faker.phoneNumber().cellPhone());
@@ -103,8 +108,9 @@ public class InfoFusionBackApplication {
 	}
 	
 	private void generateProductData() {
-		Faker faker = new Faker(new Locale("fr")); 
+		Faker faker = new Faker(new Locale("fr", "FR")); 
 		List<Shop> shops = ss.getAllShops();
+		Category ct = cts.getCategoryById(18);
 		
 		for (int i = 0; i <= 10; i++) {
 			Product prd = new Product();
@@ -115,8 +121,10 @@ public class InfoFusionBackApplication {
 			prd.setPrice(faker.number().randomDouble(2, 2, 10));
 			prd.setShop(shop);
 			
-			this.ps.addProduct(prd, shop);
+			this.ps.addProduct(prd, shop, ct);
 		}
+		
+		ct = cts.getCategoryById(1);
 		for (int i = 0; i <= 10; i++) {
 			Product prd = new Product();
 			Shop shop = this.getRandomShop(shops);
@@ -126,8 +134,10 @@ public class InfoFusionBackApplication {
 			prd.setPrice(faker.number().randomDouble(2, 0, 3));
 			prd.setShop(shop);
 			
-			this.ps.addProduct(prd, shop);
+			this.ps.addProduct(prd, shop, ct);
 		}
+		
+		ct = cts.getCategoryById(2);
 		for (int i = 0; i <= 20; i++) {
 			Product prd = new Product();
 			Shop shop = this.getRandomShop(shops);
@@ -137,8 +147,10 @@ public class InfoFusionBackApplication {
 			prd.setPrice(faker.number().randomDouble(2, 0, 2));
 			prd.setShop(shop);
 			
-			this.ps.addProduct(prd, shop);
+			this.ps.addProduct(prd, shop, ct);
 		}
+		
+		ct = cts.getCategoryById(8);
 		for (int i = 0; i <= 20; i++) {
 			Product prd = new Product();
 			Shop shop = this.getRandomShop(shops);
@@ -148,8 +160,10 @@ public class InfoFusionBackApplication {
 			prd.setPrice(faker.number().randomDouble(2, 1, 10));
 			prd.setShop(shop);
 			
-			this.ps.addProduct(prd, shop);
+			this.ps.addProduct(prd, shop, ct);
 		}
+		
+		ct = cts.getCategoryById(8);
 		for (int i = 0; i <= 20; i++) {
 			Product prd = new Product();
 			Shop shop = this.getRandomShop(shops);
@@ -159,13 +173,13 @@ public class InfoFusionBackApplication {
 			prd.setPrice(faker.number().randomDouble(2, 1, 5));
 			prd.setShop(shop);
 			
-			this.ps.addProduct(prd, shop);
+			this.ps.addProduct(prd, shop, ct);
 		}
 	}
 	
 	private Shop getRandomShop(List<Shop> shops) {
 		int index = (int)Math.floor(Math.random() * ((shops.size()-1) - 0 + 1) + 0);
 		return shops.get(index);
-	}*/
+	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.infofusionback.entity.Category;
 import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
 import com.example.infofusionback.repository.ProductRepository;
@@ -26,10 +27,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void addProduct(Product product, Shop shop) {
+	public Product addProduct(Product product, Shop shop, Category ctg) {
 		product.setShop(shop);
+		product.setCategory(ctg);
+		
 		shop.addProduct(product);
-		repo.save(product);
+		ctg.addProduct(product);
+		
+		return repo.save(product);
 
 	}
 

@@ -65,10 +65,11 @@ public class SecurityConfig {
         return "Hello, World!";
     }
 
-    @Bean
+    @Bean(name = "newJwtTokenFilter")
     public JwtTokenFilter jwtTokenFilter() {
         return new JwtTokenFilter();
     }
+    
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
@@ -80,6 +81,9 @@ public class SecurityConfig {
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/clients/**").permitAll()
                                 .requestMatchers("/shops/**").permitAll()
+                                .requestMatchers("/products/**").permitAll()
+                                .requestMatchers("/categories/**").permitAll()
+                                .requestMatchers("/orders/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

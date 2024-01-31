@@ -1,5 +1,8 @@
 package com.example.infofusionback.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -34,7 +38,7 @@ public class Product {
 		this.price = price;
 		this.quantity = qte;
 	}
-	
+
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_user")
 	@JsonIgnore
@@ -78,6 +82,29 @@ public class Product {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	@OneToMany(mappedBy="id.product", fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<Contains> content = new HashSet<Contains>();
+	public Set<Contains> getContent() {
+		return this.content;
+	}
+
+	public void setContent(Set<Contains> p) {
+		this.content = p;
+	}
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="id_category")
+	private Category category;
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }
