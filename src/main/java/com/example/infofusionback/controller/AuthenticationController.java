@@ -130,7 +130,6 @@ public class AuthenticationController {
         fidelityCard.setNbPoints(0);
         fidelityCard.setSolde(0.0);
         fidelityCard.setDatePoints(LocalDateTime.now());
-        fidelityCard.setQrCodePath(generateQRCode(client.getId())); // Utilisez le tableau de bytes au lieu du chemin
 
         // Enregistrez le FidelityCard associé au client
         fidelityCard = fs.saveFidelityCard(fidelityCard);
@@ -150,15 +149,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    private byte[] generateQRCode(Long clientId) throws Exception {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(clientId.toString(), BarcodeFormat.QR_CODE, 300, 300);
-
-        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
-
-        return outputStream.toByteArray();
-    }
     @GetMapping("/current")
     public Optional<UserBO> getUser(Authentication authentication) {
         System.out.println("OOOOOOOO "+authentication.getName());

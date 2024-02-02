@@ -62,8 +62,9 @@ public class InfoFusionBackApplication {
 	@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
-			//generateClientData();
-			//generateShopData();
+			generateClientData();
+			generateShopData();
+			generateCategorieData();
 			this.generateProductData();
 		};
 	}
@@ -106,11 +107,30 @@ public class InfoFusionBackApplication {
 			ss.saveShop(shop);
 		}
 	}
-	
+
+	private void generateCategorieData() {
+
+		Category fruits = new Category();
+		fruits.setName("Fruits");
+
+		Category vegetables = new Category();
+		vegetables.setName("Vegetables");
+
+		Category spices = new Category();
+		spices.setName("Spices");
+
+		Category beers = new Category();
+		beers.setName("Beers");
+
+		cts.addCategory(fruits);
+		cts.addCategory(vegetables);
+		cts.addCategory(spices);
+		cts.addCategory(beers);
+	}
 	private void generateProductData() {
 		Faker faker = new Faker(new Locale("fr", "FR")); 
 		List<Shop> shops = ss.getAllShops();
-		Category ct = cts.getCategoryById(18);
+		Category ct = cts.getCategoryById(4);
 		
 		for (int i = 0; i <= 10; i++) {
 			Product prd = new Product();
@@ -150,7 +170,7 @@ public class InfoFusionBackApplication {
 			this.ps.addProduct(prd, shop, ct);
 		}
 		
-		ct = cts.getCategoryById(8);
+		ct = cts.getCategoryById(3);
 		for (int i = 0; i <= 20; i++) {
 			Product prd = new Product();
 			Shop shop = this.getRandomShop(shops);
@@ -163,7 +183,7 @@ public class InfoFusionBackApplication {
 			this.ps.addProduct(prd, shop, ct);
 		}
 		
-		ct = cts.getCategoryById(8);
+		ct = cts.getCategoryById(3);
 		for (int i = 0; i <= 20; i++) {
 			Product prd = new Product();
 			Shop shop = this.getRandomShop(shops);

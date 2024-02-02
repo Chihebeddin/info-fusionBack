@@ -20,8 +20,6 @@ public class FidelityCard {
     @Column
     private LocalDateTime datePoints;
 
-    @Column(name = "qr_code_path", length = 1048576)
-    private byte[] qrCodePath;
 
     public FidelityCard() {
     }
@@ -31,7 +29,7 @@ public class FidelityCard {
         this.nbPoints = nbPoints;
         this.solde = solde;
         this.datePoints = datePoints;
-        this.qrCodePath = qrCodePath;
+
     }
 
     public Long getId() {
@@ -66,11 +64,4 @@ public class FidelityCard {
         this.datePoints = datePoints;
     }
 
-    public byte[] getQrCodePath() {
-        return qrCodePath;
-    }
-
-    public void setQrCodePath(byte[] qrCodePath) {
-        this.qrCodePath = qrCodePath;
-    }
 }

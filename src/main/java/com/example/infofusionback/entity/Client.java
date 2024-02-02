@@ -25,13 +25,21 @@ public class Client extends User {
 	@Column
 	private Date birthdate;
 
-
-
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<OrderEntity> orders = new HashSet<>();
+	@ManyToMany
+	@JoinTable(
+			name = "client_avantage",
+			joinColumns = @JoinColumn(name = "id_user"),
+			inverseJoinColumns = @JoinColumn(name = "id_avantage")
+	)
+	private Set<AvantagesVFP> avantages = new HashSet<>();
 	public Client() {
 
 	}
 
-	public Client(String email, String password, LocalDateTime d, String role) {
+	public Client(String email, String password, LocalDateTime d, String role,Set<AvantagesVFP> avantages) {
 		super(email, password, d, role);
 	}
 
@@ -67,13 +75,23 @@ public class Client extends User {
 		this.birthdate = birthdate;
 	}
 
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-	@JsonIgnore
-	private Set<OrderEntity> orders = new HashSet<>();
+
 	
 	public Set<OrderEntity> getOrders() {
 		return this.orders;
 	}
 
 	public void addOrder(OrderEntity o) { this.orders.add(o); }
+
+	public void setOrders(Set<OrderEntity> orders) {
+		this.orders = orders;
+	}
+
+	public Set<AvantagesVFP> getAvantages() {
+		return avantages;
+	}
+
+	public void setAvantages(Set<AvantagesVFP> avantages) {
+		this.avantages = avantages;
+	}
 }
