@@ -62,10 +62,10 @@ public class InfoFusionBackApplication {
 	@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
-			generateClientData();
+			/*generateClientData();
 			generateShopData();
 			generateCategorieData();
-			this.generateProductData();
+			this.generateProductData();*/
 		};
 	}
 
@@ -104,6 +104,7 @@ public class InfoFusionBackApplication {
 			LocalTime closingTime = LocalTime.of(faker.number().numberBetween(16, 22), 0);
 			shop.setOpeningTime(openingTime.toString());
 			shop.setClosingTime(closingTime.toString());
+			//shop.setShopType();
 			ss.saveShop(shop);
 		}
 	}

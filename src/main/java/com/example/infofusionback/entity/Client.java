@@ -25,6 +25,10 @@ public class Client extends User {
 	@Column
 	private Date birthdate;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fidelityCard_id", referencedColumnName = "id")
+	private FidelityCard fidelityCard;
+
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<OrderEntity> orders = new HashSet<>();

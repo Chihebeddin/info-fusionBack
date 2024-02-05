@@ -20,6 +20,8 @@ public class FidelityCard {
     @Column
     private LocalDateTime datePoints;
 
+    @OneToOne(mappedBy = "fidelityCard")
+    private Client client;
 
     public FidelityCard() {
     }
