@@ -2,12 +2,18 @@ package com.example.infofusionback.controller;
 
 
 import com.example.infofusionback.entity.Client;
+import com.example.infofusionback.entity.Contains;
 import com.example.infofusionback.entity.OrderEntity;
+import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.service.ClientService;
+import com.example.infofusionback.service.ContainsService;
 import com.example.infofusionback.service.OrderService;
+import com.example.infofusionback.service.ProductService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -18,7 +24,13 @@ public class OrderController {
 	protected OrderService orderService;
 
 	@Autowired
-	protected ClientService clientService ;
+	protected ClientService clientService;
+	
+	@Autowired
+	protected ContainsService ctntService;
+	
+	@Autowired
+	protected ProductService ps;
 
 	@GetMapping("/{id}")
 	public OrderEntity orderById(@PathVariable long id) {
@@ -31,11 +43,24 @@ public class OrderController {
 		return orderService.allOrders();
 	}
 
-	/*
+	
 	@PostMapping("/create")
-	public Order createOrder(@RequestBody Order order, @RequestParam(value="client")long clientId) {
+	public OrderEntity createOrder(@RequestBody List<Product> products, @RequestParam(value="client")long clientId) {
+		OrderEntity o = new OrderEntity(LocalDateTime.now(), "Carte bancaire", "En cours");
+		Client c = this.clientService.getClientById(clientId);
 		
-	}*/
+		orderService.addOrder(o, c);
+		
+		for (Product p: products) {
+			Product newP = ps.getProductById(p.getId());
+			Contains content = new Contains(newP, o);
+			content.setQuantity(p.getQuantity());
+			ctntService.newLine(content);
+			
+			o.addContent(content);
+		}
+		return orderService.updateOrder(o.getId(), o);
+	}
 
 
 }
