@@ -32,6 +32,7 @@ public class Client extends User {
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<OrderEntity> orders = new HashSet<>();
+	
 	@ManyToMany
 	@JoinTable(
 			name = "client_avantage",
@@ -39,11 +40,12 @@ public class Client extends User {
 			inverseJoinColumns = @JoinColumn(name = "id_avantage")
 	)
 	private Set<AvantagesVFP> avantages = new HashSet<>();
+	
 	public Client() {
 
 	}
 
-	public Client(String email, String password, LocalDateTime d, String role,Set<AvantagesVFP> avantages) {
+	public Client(String email, String password, LocalDateTime d, String role) {
 		super(email, password, d, role);
 	}
 
@@ -79,8 +81,6 @@ public class Client extends User {
 		this.birthdate = birthdate;
 	}
 
-
-	
 	public Set<OrderEntity> getOrders() {
 		return this.orders;
 	}
@@ -94,6 +94,10 @@ public class Client extends User {
 	public Set<AvantagesVFP> getAvantages() {
 		return avantages;
 	}
+	
+	public void addAvantage(AvantagesVFP a) { this.avantages.add(a); }
+	
+	public void removeAvantage(AvantagesVFP a) { this.removeAvantage(a); }
 
 	public void setAvantages(Set<AvantagesVFP> avantages) {
 		this.avantages = avantages;
