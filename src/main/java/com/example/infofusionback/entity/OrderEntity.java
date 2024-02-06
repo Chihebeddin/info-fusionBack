@@ -17,6 +17,9 @@ public class OrderEntity {
 
 	@Column
 	protected LocalDateTime validationDate;
+	
+	@Column
+	protected LocalDateTime collectDate;
 
 	@Column
 	protected String paymentOption;
@@ -49,6 +52,17 @@ public class OrderEntity {
 	public void setValidationDate(LocalDateTime validationDate) {
 		this.validationDate = validationDate;
 	}
+	
+	
+	public LocalDateTime getCollectDate() {
+		return collectDate;
+	}
+
+
+	public void setCollectDate(LocalDateTime collectDate) {
+		this.collectDate = collectDate;
+	}
+
 
 	public String getPaymentOption() {
 		return paymentOption;

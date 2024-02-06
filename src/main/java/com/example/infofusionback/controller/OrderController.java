@@ -7,6 +7,7 @@ import com.example.infofusionback.entity.OrderEntity;
 import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.service.ClientService;
 import com.example.infofusionback.service.ContainsService;
+import com.example.infofusionback.service.FidelityCardService;
 import com.example.infofusionback.service.OrderService;
 import com.example.infofusionback.service.ProductService;
 
@@ -31,6 +32,9 @@ public class OrderController {
 	
 	@Autowired
 	protected ProductService ps;
+	
+	@Autowired
+	protected FidelityCardService fcs;
 
 	@GetMapping("/{id}")
 	public OrderEntity orderById(@PathVariable long id) {
@@ -51,14 +55,20 @@ public class OrderController {
 		
 		orderService.addOrder(o, c);
 		
+		double total = 0;
+		
 		for (Product p: products) {
 			Product newP = ps.getProductById(p.getId());
 			Contains content = new Contains(newP, o);
 			content.setQuantity(p.getQuantity());
 			ctntService.newLine(content);
+			total+= p.getPrice() * p.getQuantity();
 			
 			o.addContent(content);
 		}
+		
+		fcs.addPoints(clientId, total, -total);
+		
 		return orderService.updateOrder(o.getId(), o);
 	}
 
