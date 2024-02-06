@@ -3,7 +3,6 @@ package com.example.infofusionback.controller;
 import com.example.infofusionback.entity.*;
 import com.example.infofusionback.entity.BO.UserBO;
 
-import java.io.ByteArrayOutputStream;
 import java.lang.String;
 
 import com.example.infofusionback.entity.dto.UserDTO;
@@ -11,15 +10,10 @@ import com.example.infofusionback.playload.request.ShopSignupRequest;
 import com.example.infofusionback.repository.ShopTypeRepository;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
 import com.example.infofusionback.service.*;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -132,7 +126,7 @@ public class AuthenticationController {
         fidelityCard.setDatePoints(LocalDateTime.now());
 
         // Enregistrez le FidelityCard associé au client
-        fidelityCard = fs.saveFidelityCard(fidelityCard);
+        fidelityCard = fs.saveFidelityCard(fidelityCard, client);
         try{
             name="Hello "+clientSignupRequest.getLastName();
 

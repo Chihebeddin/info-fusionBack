@@ -98,4 +98,19 @@ public class Client extends User {
 	public void setAvantages(Set<AvantagesVFP> avantages) {
 		this.avantages = avantages;
 	}
+	
+	
+	@OneToOne(mappedBy="client")
+	@JsonIgnore
+	private FidelityCard fidelityCard;
+
+	public FidelityCard getFidelityCard() {
+		return fidelityCard;
+	}
+
+	public void setFidelityCard(FidelityCard fidelityCard) {
+		this.fidelityCard = fidelityCard;
+	}
+	
+	
 }
