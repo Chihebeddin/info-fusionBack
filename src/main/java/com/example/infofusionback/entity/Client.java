@@ -26,7 +26,7 @@ public class Client extends User {
 	private Date birthdate;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fidelityCard_id", referencedColumnName = "id")
+	@JoinColumn(name = "fidelityCard_id", referencedColumnName = "fidelityCard_id")
 	private FidelityCard fidelityCard;
 
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
