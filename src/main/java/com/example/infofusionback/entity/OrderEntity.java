@@ -1,6 +1,6 @@
 package com.example.infofusionback.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +16,10 @@ public class OrderEntity {
 	protected Long id;
 
 	@Column
-	protected Date validationDate;
+	protected LocalDateTime validationDate;
+	
+	@Column
+	protected LocalDateTime collectDate;
 
 	@Column
 	protected String paymentOption;
@@ -27,7 +30,7 @@ public class OrderEntity {
 	public OrderEntity() {}
 
 
-	public OrderEntity(Date d, String option, String status) {
+	public OrderEntity(LocalDateTime d, String option, String status) {
 		this.validationDate = d;
 		this.paymentOption = option;
 		this.status = status;
@@ -42,13 +45,24 @@ public class OrderEntity {
 		this.id = id;
 	}
 
-	public Date getValidationDate() {
+	public LocalDateTime getValidationDate() {
 		return validationDate;
 	}
 
-	public void setValidationDate(Date validationDate) {
+	public void setValidationDate(LocalDateTime validationDate) {
 		this.validationDate = validationDate;
 	}
+	
+	
+	public LocalDateTime getCollectDate() {
+		return collectDate;
+	}
+
+
+	public void setCollectDate(LocalDateTime collectDate) {
+		this.collectDate = collectDate;
+	}
+
 
 	public String getPaymentOption() {
 		return paymentOption;
@@ -89,5 +103,8 @@ public class OrderEntity {
 	public void setContent(Set<Contains> c) {
 		this.content = c;
 	}
+	
+	public void addContent(Contains c) { this.content.add(c); }
+	
 
 }

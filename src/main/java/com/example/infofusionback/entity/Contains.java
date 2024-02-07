@@ -9,6 +9,16 @@ public class Contains {
 
 	@EmbeddedId
 	private ContainsId id;
+	
+	public Contains() {
+		
+	}
+	
+	public Contains(Product p, OrderEntity o) {
+		this.id = new ContainsId();
+		this.id.setOrder(o);
+		this.id.setProduct(p);
+	}
 
 	public ContainsId getId() {
 		return id;
