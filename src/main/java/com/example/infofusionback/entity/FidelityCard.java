@@ -20,8 +20,9 @@ public class FidelityCard {
 	@Column
 	private LocalDateTime datePoints;
 
-    @OneToOne(mappedBy = "fidelityCard")
-    private Client client;
+	@OneToOne
+	@JoinColumn(name="id_user")
+	private Client client;
 
 	public FidelityCard() {
 		this.nbPoints = 0;
@@ -78,9 +79,7 @@ public class FidelityCard {
 		this.datePoints = datePoints;
 	}
 
-	@OneToOne
-	@JoinColumn(name="id_user")
-	private Client client;
+
 
 
 	public Client getClient() {

@@ -25,9 +25,9 @@ public class Client extends User {
 	@Column
 	private Date birthdate;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	/*@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fidelityCard_id", referencedColumnName = "fidelityCard_id")
-	private FidelityCard fidelityCard;
+	private FidelityCard fidelityCard;*/
 
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	@JsonIgnore
@@ -40,6 +40,11 @@ public class Client extends User {
 			inverseJoinColumns = @JoinColumn(name = "id_avantage")
 	)
 	private Set<AvantagesVFP> avantages = new HashSet<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fidelityCard_id", referencedColumnName = "fidelityCard_id")
+	@JsonIgnore
+	private FidelityCard fidelityCard;
 	
 	public Client() {
 
@@ -104,9 +109,7 @@ public class Client extends User {
 	}
 	
 	
-	@OneToOne(mappedBy="client")
-	@JsonIgnore
-	private FidelityCard fidelityCard;
+
 
 	public FidelityCard getFidelityCard() {
 		return fidelityCard;
