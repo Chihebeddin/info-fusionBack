@@ -27,7 +27,7 @@ public class Shop extends User {
 	@Column
 	private String closingTime;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinTable(	name = "shops_types",
 			joinColumns = @JoinColumn(name = "id_user"),
 			inverseJoinColumns = @JoinColumn(name = "id_shoptype"))
