@@ -121,9 +121,6 @@ public class AuthenticationController {
         client = cs.saveClient(client);
 
         FidelityCard fidelityCard = new FidelityCard();
-        fidelityCard.setNbPoints(0);
-        fidelityCard.setSolde(0.0);
-        fidelityCard.setDatePoints(LocalDateTime.now());
 
 
         // Enregistrez le FidelityCard associé au client
