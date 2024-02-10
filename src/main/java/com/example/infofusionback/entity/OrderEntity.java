@@ -13,6 +13,7 @@ public class OrderEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_order_entity")
 	protected Long id;
 
 	@Column
@@ -26,6 +27,9 @@ public class OrderEntity {
 
 	@Column
 	protected String status;
+	
+	@Column
+	protected double total;
 
 	public OrderEntity() {}
 
@@ -34,6 +38,7 @@ public class OrderEntity {
 		this.validationDate = d;
 		this.paymentOption = option;
 		this.status = status;
+		this.total = 0;
 	}
 
 
@@ -80,6 +85,15 @@ public class OrderEntity {
 		this.status = status;
 	}
 
+	public double getTotal() {
+		return total;
+	}
+
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_user")
 	@JsonIgnore
@@ -93,7 +107,7 @@ public class OrderEntity {
 		this.client = client;
 	}
 
-	@OneToMany(mappedBy="id.order", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="id.orderEntity", fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<Contains> content = new HashSet<Contains>();
 	public Set<Contains> getContent() {

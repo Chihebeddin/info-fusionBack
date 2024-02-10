@@ -11,10 +11,14 @@ import org.springframework.stereotype.Service;
 public interface OrderService {
 
 	OrderEntity getOrderById(long id);
+	
+	List<OrderEntity> getUserOrders(long id);
 
 	List<OrderEntity> allOrders();
 
 	OrderEntity addOrder(OrderEntity o, Client c);
 	
 	OrderEntity updateOrder(Long id, OrderEntity o);
+	
+	void deleteById(long id);
 }

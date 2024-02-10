@@ -1,5 +1,7 @@
 package com.example.infofusionback.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -8,6 +10,7 @@ import jakarta.persistence.Entity;
 public class Contains {
 
 	@EmbeddedId
+	@JsonIgnore
 	private ContainsId id;
 	
 	public Contains() {

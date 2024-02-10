@@ -37,4 +37,15 @@ public class OrderServiceImpl  implements OrderService {
 		ord.setContent(o.getContent());
 		return orderRepository.save(ord);
 	}
+
+	@Override
+	public List<OrderEntity> getUserOrders(long id) {
+		return orderRepository.findByIdUser(id);
+	}
+
+	@Override
+	public void deleteById(long id) {
+		orderRepository.deleteById(id);
+		
+	}
 }

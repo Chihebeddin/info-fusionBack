@@ -41,9 +41,13 @@ public class OrderController {
 		return orderService.getOrderById(id);
 	}
 
+	@GetMapping("/filtered")
+	public List<OrderEntity> ordersByUser(@RequestParam(value="client") long id) {
+		return orderService.getUserOrders(id);
+	}
 
 	@GetMapping()
-	public List<OrderEntity> products() {
+	public List<OrderEntity> orders() {
 		return orderService.allOrders();
 	}
 
@@ -62,15 +66,26 @@ public class OrderController {
 			Contains content = new Contains(newP, o);
 			content.setQuantity(p.getQuantity());
 			ctntService.newLine(content);
+			
 			total+= p.getPrice() * p.getQuantity();
+			
+			newP.setQuantity(newP.getQuantity() - p.getQuantity());
+			ps.updateProduct(newP.getId(), newP);
 			
 			o.addContent(content);
 		}
 		
 		fcs.addPoints(clientId, total, -total);
+		o.setTotal(total);
 		
 		return orderService.updateOrder(o.getId(), o);
 	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteById(@PathVariable long id) {
+		orderService.deleteById(id);
+	}
+
 
 
 }
