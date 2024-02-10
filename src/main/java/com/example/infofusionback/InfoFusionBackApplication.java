@@ -55,10 +55,10 @@ public class InfoFusionBackApplication {
 	@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
-			generateClientData();
-			generateShopData();
-			generateCategorieData();
-			this.generateProductData();
+			//generateClientData();
+			//generateShopData();
+			//generateCategorieData();
+			//this.generateProductData();
 		};
 	}
 

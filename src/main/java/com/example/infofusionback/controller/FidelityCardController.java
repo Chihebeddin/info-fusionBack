@@ -31,6 +31,11 @@ public class FidelityCardController {
 		return fs.getById(id);
 	}
 
+	@GetMapping("/client/{id}")
+	public FidelityCard getByClientId(@PathVariable long id) {
+		return fs.findByUser(id);
+	}
+
 	@GetMapping()
 	public List<FidelityCard> products() {
 		return fs.getAllFidelityCards();
