@@ -1,5 +1,7 @@
 package com.example.infofusionback.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -8,19 +10,21 @@ import jakarta.persistence.ManyToOne;
 public class ContainsId {
 
 	@ManyToOne
-	@JoinColumn(name = "id_order")
-	private OrderEntity order;
+	@JoinColumn(name = "id_order_entity")
+	@JsonIgnore
+	private OrderEntity orderEntity;
 
 	@ManyToOne
 	@JoinColumn(name="id_product")
+	@JsonIgnore
 	private Product product;
 
 	public OrderEntity getOrder() {
-		return order;
+		return orderEntity;
 	}
 
 	public void setOrder(OrderEntity order) {
-		this.order = order;
+		this.orderEntity = order;
 	}
 
 	public Product getProduct() {

@@ -1,6 +1,6 @@
 package com.example.infofusionback.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,24 +13,32 @@ public class OrderEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_order_entity")
 	protected Long id;
 
 	@Column
-	protected Date validationDate;
+	protected LocalDateTime validationDate;
+	
+	@Column
+	protected LocalDateTime collectDate;
 
 	@Column
 	protected String paymentOption;
 
 	@Column
 	protected String status;
+	
+	@Column
+	protected double total;
 
 	public OrderEntity() {}
 
 
-	public OrderEntity(Date d, String option, String status) {
+	public OrderEntity(LocalDateTime d, String option, String status) {
 		this.validationDate = d;
 		this.paymentOption = option;
 		this.status = status;
+		this.total = 0;
 	}
 
 
@@ -42,13 +50,24 @@ public class OrderEntity {
 		this.id = id;
 	}
 
-	public Date getValidationDate() {
+	public LocalDateTime getValidationDate() {
 		return validationDate;
 	}
 
-	public void setValidationDate(Date validationDate) {
+	public void setValidationDate(LocalDateTime validationDate) {
 		this.validationDate = validationDate;
 	}
+	
+	
+	public LocalDateTime getCollectDate() {
+		return collectDate;
+	}
+
+
+	public void setCollectDate(LocalDateTime collectDate) {
+		this.collectDate = collectDate;
+	}
+
 
 	public String getPaymentOption() {
 		return paymentOption;
@@ -66,6 +85,15 @@ public class OrderEntity {
 		this.status = status;
 	}
 
+	public double getTotal() {
+		return total;
+	}
+
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_user")
 	@JsonIgnore
@@ -79,7 +107,7 @@ public class OrderEntity {
 		this.client = client;
 	}
 
-	@OneToMany(mappedBy="id.order", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="id.orderEntity", fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<Contains> content = new HashSet<Contains>();
 	public Set<Contains> getContent() {
@@ -89,5 +117,8 @@ public class OrderEntity {
 	public void setContent(Set<Contains> c) {
 		this.content = c;
 	}
+	
+	public void addContent(Contains c) { this.content.add(c); }
+	
 
 }

@@ -20,6 +20,7 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_product")
 	protected Long id;
 
 	@Column

@@ -1,16 +1,7 @@
 package com.example.infofusionback;
 
-import com.example.infofusionback.entity.Category;
-import com.example.infofusionback.entity.Client;
-import com.example.infofusionback.entity.EShopType;
-import com.example.infofusionback.entity.Product;
-import com.example.infofusionback.entity.Shop;
-import com.example.infofusionback.entity.ShopType;
-import com.example.infofusionback.service.CategoryService;
-import com.example.infofusionback.service.ClientService;
-import com.example.infofusionback.service.ProductService;
-import com.example.infofusionback.service.ShopService;
-import com.example.infofusionback.service.ShopTypeService;
+import com.example.infofusionback.entity.*;
+import com.example.infofusionback.service.*;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,8 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
@@ -31,6 +21,9 @@ public class InfoFusionBackApplication {
 	
 	@Autowired
 	private ClientService cs;
+
+	@Autowired
+	private FidelityCardService fs;
 	
 	@Autowired
 	private ShopService ss;
@@ -62,17 +55,16 @@ public class InfoFusionBackApplication {
 	@Bean
 	public CommandLineRunner generateData() {
 		return args -> {
-			generateClientData();
-			generateShopData();
-			generateCategorieData();
-			this.generateProductData();
+			//generateClientData();
+			//generateShopData();
+			//generateCategorieData();
+			//this.generateProductData();
 		};
 	}
 
 	
 	private void generateClientData() {
 		Faker faker = new Faker();
-
 		for (int i = 1; i <= 100; i++) {
 			Client client = new Client();
 			String firstName = faker.name().firstName();
@@ -86,13 +78,33 @@ public class InfoFusionBackApplication {
 			client.setPhone(faker.phoneNumber().cellPhone());
 			client.setBirthdate(faker.date().birthday());
 			cs.saveClient(client);
+			FidelityCard fidelityCard = new FidelityCard();
+			int nbPoints = faker.number().numberBetween(0, 50);
+			double solde = faker.number().randomDouble(2, 0, 1000);
+			fidelityCard.setNbPoints(nbPoints);
+			fidelityCard.setSolde(solde);
+			fidelityCard.setDatePoints(LocalDateTime.now());
+
+
+			// Enregistrez le FidelityCard associé au client
+			fidelityCard = fs.saveFidelityCard(fidelityCard, client);
 		}
 	}
 	private void generateShopData() {
 		Faker faker = new Faker();
+		Random random = new Random();
 
 		for (int i = 1; i <= 30; i++) {
 			Shop shop = new Shop();
+			Set<ShopType> shopTypes = new HashSet<>();
+			// Randomly choose one or more types for each shop
+			for (int j = 0; j < random.nextInt(4) + 1; j++) {
+				EShopType type = EShopType.values()[random.nextInt(EShopType.values().length)];
+				ShopType shopType = new ShopType();
+				shopType.setType(type);
+				shopTypes.add(shopType);
+			}
+			shop.setShopType(shopTypes);
 			shop.setEmail(faker.internet().emailAddress());
 			shop.setPassword(faker.internet().password());
 			shop.setD(LocalDateTime.now());
@@ -104,7 +116,11 @@ public class InfoFusionBackApplication {
 			LocalTime closingTime = LocalTime.of(faker.number().numberBetween(16, 22), 0);
 			shop.setOpeningTime(openingTime.toString());
 			shop.setClosingTime(closingTime.toString());
+
+			shop.setShopType(shopTypes);
+
 			ss.saveShop(shop);
+
 		}
 	}
 
