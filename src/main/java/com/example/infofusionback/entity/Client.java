@@ -107,8 +107,6 @@ public class Client extends User {
 	public void setAvantages(Set<AvantagesVFP> avantages) {
 		this.avantages = avantages;
 	}
-	
-	
 
 
 	public FidelityCard getFidelityCard() {

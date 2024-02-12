@@ -21,8 +21,7 @@ public class ContainsServiceImpl implements ContainsService {
 
 	@Override
 	public List<Contains> userOrdersDetails(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findByIdOrderEntity(id);
 	}
 
 

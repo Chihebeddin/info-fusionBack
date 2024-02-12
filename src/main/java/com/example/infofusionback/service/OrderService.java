@@ -15,10 +15,14 @@ public interface OrderService {
 	List<OrderEntity> getUserOrders(long id);
 
 	List<OrderEntity> allOrders();
+	
+	List<OrderEntity> shopOrders(long id);
 
 	OrderEntity addOrder(OrderEntity o, Client c);
 	
 	OrderEntity updateOrder(Long id, OrderEntity o);
+	
+	OrderEntity changeStatus(long id, String status);
 	
 	void deleteById(long id);
 }

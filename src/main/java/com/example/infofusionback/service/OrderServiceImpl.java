@@ -6,6 +6,7 @@ import com.example.infofusionback.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -37,6 +38,16 @@ public class OrderServiceImpl  implements OrderService {
 		ord.setContent(o.getContent());
 		return orderRepository.save(ord);
 	}
+	
+	@Override
+	public OrderEntity changeStatus(long id, String status) {
+		OrderEntity ord = this.getOrderById(id);
+		ord.setStatus(status);
+		if ( status.equals("Terminée") ) {
+			ord.setCollectDate(LocalDateTime.now());
+		}
+		return orderRepository.save(ord);
+	}
 
 	@Override
 	public List<OrderEntity> getUserOrders(long id) {
@@ -48,4 +59,11 @@ public class OrderServiceImpl  implements OrderService {
 		orderRepository.deleteById(id);
 		
 	}
+
+	@Override
+	public List<OrderEntity> shopOrders(long id) {
+		return orderRepository.findAll(id);
+	}
+	
+	
 }

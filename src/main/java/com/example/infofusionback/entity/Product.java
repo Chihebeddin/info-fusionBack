@@ -42,7 +42,6 @@ public class Product {
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_user")
-	@JsonIgnore
 	protected Shop shop;
 
 	public Shop getShop() {

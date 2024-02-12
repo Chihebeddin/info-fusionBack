@@ -45,11 +45,16 @@ public class OrderController {
 	public List<OrderEntity> ordersByUser(@RequestParam(value="client") long id) {
 		return orderService.getUserOrders(id);
 	}
-
+	
 	@GetMapping()
+	public List<OrderEntity> ordersByShop(@RequestParam(value="shop") long id) {
+		return orderService.shopOrders(id);
+	}
+
+	/*@GetMapping()
 	public List<OrderEntity> orders() {
 		return orderService.allOrders();
-	}
+	}*/
 
 	
 	@PostMapping("/create")
@@ -81,11 +86,16 @@ public class OrderController {
 		return orderService.updateOrder(o.getId(), o);
 	}
 	
+	
+	@PutMapping("/{id}")
+	public OrderEntity updateOrderStatus(@PathVariable long id, @RequestParam(value="status")String status) {
+		return orderService.changeStatus(id, status);
+	}
+	
+	
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable long id) {
 		orderService.deleteById(id);
 	}
-
-
 
 }

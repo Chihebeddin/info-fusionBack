@@ -85,6 +85,7 @@ public class SecurityConfig {
                                 .requestMatchers("/categories/**").permitAll()
                                 .requestMatchers("/orders/**").permitAll()
                                 .requestMatchers("/fidelitycards/**").permitAll()
+                                .requestMatchers("/contains/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

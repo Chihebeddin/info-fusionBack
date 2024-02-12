@@ -96,7 +96,6 @@ public class OrderEntity {
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_user")
-	@JsonIgnore
 	protected Client client;
 
 	public Client getClient() {

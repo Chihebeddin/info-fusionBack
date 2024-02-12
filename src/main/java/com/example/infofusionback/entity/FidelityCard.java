@@ -80,8 +80,6 @@ public class FidelityCard {
 	}
 
 
-
-
 	public Client getClient() {
 		return client;
 	}
