@@ -9,7 +9,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -119,10 +123,12 @@ public class InfoFusionBackApplication {
 
 			shop.setShopType(shopTypes);
 
+
 			ss.saveShop(shop);
 
 		}
 	}
+
 
 	private void generateCategorieData() {
 

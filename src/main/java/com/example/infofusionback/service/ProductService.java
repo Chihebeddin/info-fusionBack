@@ -9,7 +9,6 @@ import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
 
 
-@Service
 public interface ProductService {
 
 	List<Product> allProducts();
@@ -20,7 +19,7 @@ public interface ProductService {
 
 	Product addProduct(Product product, Shop shop, Category ctg);
 
-	void deleteProduct(long id);
+	void deleteProduct(Long id);
 
 	Product updateProduct(Long id, Product p);
 

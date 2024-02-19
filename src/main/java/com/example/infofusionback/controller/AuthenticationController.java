@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +49,11 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
 
+    @Autowired
+    private StorageServiceInterface storageService;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
@@ -153,14 +157,14 @@ public class AuthenticationController {
         return fs.getAllFidelityCards();
     }
     @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody ShopSignupRequest shopSignupRequest) throws Exception {
+    public ResponseEntity<?> register(@MultipartForm ShopSignupRequest shopSignupRequest) throws Exception {
         if (userService.findUserByEmail(shopSignupRequest.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("User already exists");
         }
 
-        if (!shopSignupRequest.getPassword().equals(shopSignupRequest.getConfirmPassword())) {
+        /*if (!shopSignupRequest.getPassword().equals(shopSignupRequest.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Passwords do not match");
-        }
+        }*/
 
         Shop shop = new Shop();
 
@@ -203,15 +207,20 @@ public class AuthenticationController {
 
         shop.setEmail(shopSignupRequest.getEmail());
         shop.setRole(shopSignupRequest.getRole());
-        shop.setPassword(passwordEncoder.encode(shopSignupRequest.getPassword()));
         shop.setName(shopSignupRequest.getName());
         shop.setOpeningTime(shopSignupRequest.getOpeningTime());
         shop.setClosingTime(shopSignupRequest.getClosingTime());
         shop.setD(LocalDateTime.now());
         shop.setLocation(shopSignupRequest.getLocation());
+        System.out.println(shopSignupRequest.getLocation());
         shop.setPhone(shopSignupRequest.getPhone());
         shop.setRole("ROLE_SHOP");
         shop.setShopType(types);
+        //this.storageService.store(shopSignupRequest.getImage());
+        System.out.println(shopSignupRequest.getImage().getBytes());
+        shop.setImage(shopSignupRequest.getImage().getBytes());
+        shop.setPassword(passwordEncoder.encode(shopSignupRequest.getPassword()));
+
         shop = ss.saveShop(shop);
 
         try{

@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.example.infofusionback.entity.Product;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
 	
 	List<Product> findAll();
-	
+
+
 	Product findById(long id);
 	
 	@Query(value="select * from Product p where p.id_user =:id", nativeQuery=true)
