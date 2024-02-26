@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +21,7 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_product")
+	@Column(name = "id_product")
 	protected Long id;
 
 	@Column
@@ -29,19 +30,24 @@ public class Product {
 	@Column
 	protected double price;
 
-	@Column 
+	@Column
 	protected int quantity;
 
-	public Product() {}
+	@Column
+	protected int safetyStock;
 
-	public Product(String name, double price, int qte) {
+	public Product() {
+	}
+
+	public Product(String name, double price, int qte, int ss) {
 		this.name = name;
 		this.price = price;
 		this.quantity = qte;
+		this.safetyStock = ss;
 	}
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="id_user")
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name = "id_user")
 	protected Shop shop;
 
 	public Shop getShop() {
@@ -81,12 +87,21 @@ public class Product {
 	}
 
 	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+		this.quantity += quantity;
 	}
 
-	@OneToMany(mappedBy="id.product", fetch=FetchType.EAGER)
+	public int getSafetyStock() {
+		return safetyStock;
+	}
+
+	public void setSafetyStock(int safetyStock) {
+		this.safetyStock = safetyStock;
+	}
+
+	@OneToMany(mappedBy = "id.product", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Contains> content = new HashSet<Contains>();
+
 	public Set<Contains> getContent() {
 		return this.content;
 	}
@@ -94,9 +109,9 @@ public class Product {
 	public void setContent(Set<Contains> p) {
 		this.content = p;
 	}
-	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="id_category")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_category")
 	private Category category;
 
 	public Category getCategory() {

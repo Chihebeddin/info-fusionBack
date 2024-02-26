@@ -23,5 +23,7 @@ public interface ProductService {
 	void deleteProduct(long id);
 
 	Product updateProduct(Long id, Product p);
+	
+	Product updateStock(long id, int qte);
 
 }

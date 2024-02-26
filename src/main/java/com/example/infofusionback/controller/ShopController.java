@@ -1,5 +1,6 @@
 package com.example.infofusionback.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,17 @@ public class ShopController {
 	@GetMapping
 	public List<Shop> getAllShops() {
 		return shopService.getAllShops();
+	}
+	
+	@GetMapping("/filtered")
+	public List<Shop> filteredShops() {
+		List<Shop> shops = new ArrayList<>();
+		for (Shop s : this.getAllShops()) {
+			if ( !s.getProducts().isEmpty() ) {
+				shops.add(s);
+			}
+		}
+		return shops;
 	}
 
 	@PutMapping("/{id}")

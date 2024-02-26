@@ -63,6 +63,11 @@ public class ProductController {
 		return this.productService.updateProduct(id, p);
 	}
 	
+	@PutMapping("/stock/{id}")
+	public Product restock(@PathVariable Long id, @RequestParam(value="stock")int qte) {
+		return this.productService.updateStock(id, qte);
+	}
+	
 	@DeleteMapping("/{id}")
 	public void deleteProduct(@PathVariable long id) {
 		this.productService.deleteProduct(id);

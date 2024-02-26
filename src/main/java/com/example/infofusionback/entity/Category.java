@@ -45,7 +45,7 @@ public class Category {
 		this.name = name;
 	}
 
-	@OneToMany(mappedBy = "category", fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy = "category", fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<Product> products = new HashSet<Product>();
 
