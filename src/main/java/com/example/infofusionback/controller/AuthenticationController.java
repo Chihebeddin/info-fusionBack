@@ -39,6 +39,7 @@ import com.example.infofusionback.security.jwt.JwtResponse;
 import com.example.infofusionback.security.jwt.JwtTokenUtil;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -157,18 +158,26 @@ public class AuthenticationController {
         return fs.getAllFidelityCards();
     }
     @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@MultipartForm ShopSignupRequest shopSignupRequest) throws Exception {
-        if (userService.findUserByEmail(shopSignupRequest.getEmail()).isPresent()) {
+    public ResponseEntity<?> register(@RequestParam String name,
+                                      @RequestParam String location,
+                                      @RequestParam String phone,
+                                      @RequestParam String openingTime,
+                                      @RequestParam String closingTime,
+                                      @RequestParam MultipartFile image,
+                                      @RequestParam String email,
+                                      @RequestParam String password,
+                                      @RequestParam String confirmPassword) throws Exception {
+        if (userService.findUserByEmail(email).isPresent()) {
             return ResponseEntity.badRequest().body("User already exists");
         }
 
-        /*if (!shopSignupRequest.getPassword().equals(shopSignupRequest.getConfirmPassword())) {
+        if (!password.equals(confirmPassword)) {
             return ResponseEntity.badRequest().body("Passwords do not match");
-        }*/
+        }
 
         Shop shop = new Shop();
 
-        Set<String> ShopType = shopSignupRequest.getShopType();
+        /*Set<String> ShopType = shopSignupRequest.getShopType();
         Set<ShopType> types = new HashSet<>();
 
         if (ShopType == null) {
@@ -203,32 +212,33 @@ public class AuthenticationController {
                         types.add(userRole);
                 }
             });
-        }
+        }*/
 
-        shop.setEmail(shopSignupRequest.getEmail());
-        shop.setRole(shopSignupRequest.getRole());
-        shop.setName(shopSignupRequest.getName());
-        shop.setOpeningTime(shopSignupRequest.getOpeningTime());
-        shop.setClosingTime(shopSignupRequest.getClosingTime());
+        shop.setEmail(email);
+        //shop.setRole(shopSignupRequest.getRole());
+        shop.setName(name);
+        shop.setOpeningTime(openingTime);
+        shop.setClosingTime(closingTime);
         shop.setD(LocalDateTime.now());
-        shop.setLocation(shopSignupRequest.getLocation());
-        System.out.println(shopSignupRequest.getLocation());
-        shop.setPhone(shopSignupRequest.getPhone());
+        shop.setLocation(location);
+        shop.setPhone(phone);
         shop.setRole("ROLE_SHOP");
-        shop.setShopType(types);
+        shop.setImage(image.getBytes());
+        //shop.setShopType(types);
         //this.storageService.store(shopSignupRequest.getImage());
-        System.out.println(shopSignupRequest.getImage().getBytes());
-        shop.setImage(shopSignupRequest.getImage().getBytes());
-        shop.setPassword(passwordEncoder.encode(shopSignupRequest.getPassword()));
+        //System.out.println(shopSignupRequest.getImage().getBytes());
+        //shop.setImage(shopSignupRequest.getImage().getBytes());
+        System.out.println(image);
+        shop.setPassword(passwordEncoder.encode(password));
 
         shop = ss.saveShop(shop);
 
         try{
-            name="Hello "+shopSignupRequest.getName();
+            name="Hello "+name;
 
 
             System.out.println(name);
-            emailService.sendMailWithAttachment(shopSignupRequest.getEmail().toString(),
+            emailService.sendMailWithAttachment(email.toString(),
                     name.toString(),
                     "Account Infos");
         }catch (Exception e){

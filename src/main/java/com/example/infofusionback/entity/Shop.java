@@ -28,7 +28,7 @@ public class Shop extends User {
 	private String closingTime;
 
 	@Lob // Utilisé pour stocker de gros objets, comme des images
-	@Column
+	@Column(length = 1048576)
 	private byte[] image; // Champ pour stocker l'image en tant que tableau de bytes
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)

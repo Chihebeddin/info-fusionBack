@@ -24,7 +24,7 @@ public class ShopSignupRequest {
     private String closingTime;
     //@Nullable
     //@JsonProperty("image")
-    private MultipartFile image;
+    //private MultipartFile image;
     private String email;
     private LocalDateTime d;
     private String role;
@@ -125,11 +125,11 @@ public class ShopSignupRequest {
         this.shopType = shopType;
     }
 
-    public MultipartFile getImage() {
+    /*public MultipartFile getImage() {
         return image;
     }
 
     public void setImage(MultipartFile image) {
         this.image = image;
-    }
+    }*/
 }
