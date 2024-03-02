@@ -1,4 +1,5 @@
 package com.example.infofusionback;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.example.infofusionback.entity.*;
 import com.example.infofusionback.service.*;
@@ -17,6 +18,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
+@EnableScheduling
 public class InfoFusionBackApplication {
 	
 	@Autowired
