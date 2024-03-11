@@ -20,9 +20,14 @@ public interface OrderService {
 
 	OrderEntity addOrder(OrderEntity o, Client c);
 	
+	OrderEntity acceptOrder(long id);
+	
+	OrderEntity endOrder(long id);
+	
 	OrderEntity updateOrder(Long id, OrderEntity o);
 	
 	OrderEntity changeStatus(long id, String status);
 	
 	void deleteById(long id);
+
 }

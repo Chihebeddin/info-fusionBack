@@ -18,5 +18,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 	
 	@Query(value="select * from Product p where p.id_user =:id", nativeQuery=true)
 	List<Product> findByIdUser(Long id);
+	
+	void deleteById(Long id);
 
 }

@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void deleteProduct(Long id) {
+	public void deleteProduct(long id) {
 		repo.deleteById(id);
 
 	}
@@ -49,7 +49,8 @@ public class ProductServiceImpl implements ProductService {
 		Product prd = this.getProductById(id);
 		prd.setName(p.getName());
 		prd.setPrice(p.getPrice());
-		prd.setQuantity(p.getQuantity());
+		prd.setSafetyStock(p.getSafetyStock());
+		prd.setCategory(p.getCategory());
 		return repo.save(prd);
 	}
 
@@ -57,5 +58,14 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> productsByShop(long id) {
 		return repo.findByIdUser(id);
 	}
+
+	@Override
+	public Product updateStock(long id, int qte) {
+		Product prd = this.getProductById(id);
+		
+		prd.setQuantity(qte);
+		return repo.save(prd);
+	}
+
 
 }

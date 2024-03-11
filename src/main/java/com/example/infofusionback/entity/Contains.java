@@ -17,10 +17,11 @@ public class Contains {
 		
 	}
 	
-	public Contains(Product p, OrderEntity o) {
+	public Contains(Product p, OrderEntity o, int qte) {
 		this.id = new ContainsId();
 		this.id.setOrder(o);
 		this.id.setProduct(p);
+		this.quantity = qte;
 	}
 
 	public ContainsId getId() {

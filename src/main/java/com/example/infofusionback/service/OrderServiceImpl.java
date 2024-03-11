@@ -1,7 +1,9 @@
 package com.example.infofusionback.service;
 
 import com.example.infofusionback.entity.Client;
+import com.example.infofusionback.entity.Contains;
 import com.example.infofusionback.entity.OrderEntity;
+import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,15 @@ public class OrderServiceImpl  implements OrderService {
 
 	@Autowired
 	protected  OrderRepository orderRepository ;
+	
+	@Autowired
+	protected ContainsService cs;
+	
+	@Autowired
+	protected ProductService ps;
+	
+	@Autowired
+	protected FidelityCardService fcs;
 
 	@Override
 	public OrderEntity getOrderById(long id) {
@@ -37,6 +48,28 @@ public class OrderServiceImpl  implements OrderService {
 		OrderEntity ord = this.getOrderById(id);
 		ord.setContent(o.getContent());
 		return orderRepository.save(ord);
+	}
+	
+	@Override
+	public OrderEntity acceptOrder(long id) {
+		List<Contains> content = cs.userOrdersDetails(id);
+		for (Contains c : content) {
+			// get the product linked to the current line (c)
+			Product p = ps.getProductById(c.getProduct().getId());
+			// update the quantity of the product & save the update
+			p.setQuantity(p.getQuantity() - c.getQuantity());
+			ps.updateProduct(p.getId(), p);
+		}
+		return this.changeStatus(id, "Acceptée");
+	}
+
+	@Override
+	public OrderEntity endOrder(long id) {
+		OrderEntity o = this.getOrderById(id);
+		
+		fcs.addPoints(o.getClient().getId(), o.getTotal(), -o.getTotal());
+		
+		return this.changeStatus(id, "Terminée");
 	}
 	
 	@Override
@@ -64,6 +97,5 @@ public class OrderServiceImpl  implements OrderService {
 	public List<OrderEntity> shopOrders(long id) {
 		return orderRepository.findAll(id);
 	}
-	
 	
 }
