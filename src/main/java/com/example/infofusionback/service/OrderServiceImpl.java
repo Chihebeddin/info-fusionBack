@@ -67,7 +67,12 @@ public class OrderServiceImpl  implements OrderService {
 	public OrderEntity endOrder(long id) {
 		OrderEntity o = this.getOrderById(id);
 		
-		fcs.addPoints(o.getClient().getId(), o.getTotal(), -o.getTotal());
+		if ( o.getPaymentOption().equals("Carte de fidélité/paiement")) {
+			fcs.addPoints(o.getClient().getId(), o.getTotal(), -o.getTotal());
+		}
+		else {
+			fcs.addPoints(o.getClient().getId(), o.getTotal(), 0);
+		}
 		
 		return this.changeStatus(id, "Terminée");
 	}

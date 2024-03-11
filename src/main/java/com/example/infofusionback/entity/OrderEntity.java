@@ -36,7 +36,7 @@ public class OrderEntity {
 
 	public OrderEntity(LocalDateTime d, String option, String status) {
 		this.validationDate = d;
-		this.paymentOption = option;
+		this.setPaymentOption(option);
 		this.status = status;
 		this.total = 0;
 	}
@@ -74,7 +74,15 @@ public class OrderEntity {
 	}
 
 	public void setPaymentOption(String paymentOption) {
-		this.paymentOption = paymentOption;
+		if( paymentOption.equals("Cash") ) {
+			this.paymentOption = "Espèces";
+		}
+		else if ( paymentOption.equals("CreditCard") ) {
+			this.paymentOption = "Carte bancaire";
+		}
+		else if ( paymentOption.equals("FidelityCard") ) {
+			this.paymentOption = "Carte de fidélité/paiement";
+		}
 	}
 
 	public String getStatus() {

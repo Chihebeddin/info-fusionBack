@@ -54,8 +54,9 @@ public class OrderController {
 
 	
 	@PostMapping("/create")
-	public OrderEntity createOrder(@RequestBody List<Product> products, @RequestParam(value="client")long clientId) {
-		OrderEntity o = new OrderEntity(LocalDateTime.now(), "Carte bancaire", "En cours");
+	public OrderEntity createOrder(@RequestBody List<Product> products, @RequestParam(value="client")long clientId,
+			@RequestParam(value="payment")String option) {
+		OrderEntity o = new OrderEntity(LocalDateTime.now(), option, "En cours");
 		Client c = this.clientService.getClientById(clientId);
 		
 		orderService.addOrder(o, c);

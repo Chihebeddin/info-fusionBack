@@ -30,16 +30,16 @@ public class ProductServiceImpl implements ProductService {
 	public Product addProduct(Product product, Shop shop, Category ctg) {
 		product.setShop(shop);
 		product.setCategory(ctg);
-		
+
 		shop.addProduct(product);
 		ctg.addProduct(product);
-		
+
 		return repo.save(product);
 
 	}
 
 	@Override
-	public void deleteProduct(long id) {
+	public void deleteProduct(Long id) {
 		repo.deleteById(id);
 
 	}
@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product updateStock(long id, int qte) {
 		Product prd = this.getProductById(id);
-		
+
 		prd.setQuantity(qte);
 		return repo.save(prd);
 	}
