@@ -67,8 +67,13 @@ public class FidelityCard {
 	}
 	
 	public double updateSolde(double amount) {
-		this.solde+= amount;
-		return this.solde;
+		if (amount >=1 && amount <= 50) {
+			this.solde+= amount;
+			return this.solde;
+		}
+		else {
+			throw new IllegalArgumentException("Vous devez saisir un montant compris entre 1 et 50 €");
+		}
 	}
 
 	public LocalDateTime getDatePoints() {
