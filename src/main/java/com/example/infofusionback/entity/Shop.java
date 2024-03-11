@@ -31,6 +31,12 @@ public class Shop extends User {
 	@Column(length = 1048576)
 	private byte[] image; // Champ pour stocker l'image en tant que tableau de bytes
 
+	@Column
+	private double longitude;
+
+	@Column
+	private double latitude;
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinTable(	name = "shops_types",
 			joinColumns = @JoinColumn(name = "id_user"),
@@ -48,7 +54,7 @@ public class Shop extends User {
 		}
 
 
-	public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopType, byte[] image) {
+	public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopType, byte[] image, double longitude, double latitude ) {
 		super(email, password, d, role);
 		this.name = name;
 		this.location = location;
@@ -57,6 +63,8 @@ public class Shop extends User {
 		this.closingTime = closingTime;
 		this.shopType = shopType;
 		this.image = image;
+		this.longitude = longitude;
+		this.latitude = latitude;
 	}
 
 	public String getName() {
@@ -122,5 +130,20 @@ public class Shop extends User {
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
-	
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
 }

@@ -29,9 +29,14 @@ public class ShopSignupRequest {
     private LocalDateTime d;
     private String role;
 
+    private double longitude;
+
+    private double latitude;
+
     private Set<String> shopType;
     private String password;
     private String confirmPassword;
+
 
 
 
@@ -123,6 +128,22 @@ public class ShopSignupRequest {
 
     public void setShopType(Set<String> shopType) {
         this.shopType = shopType;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     /*public MultipartFile getImage() {

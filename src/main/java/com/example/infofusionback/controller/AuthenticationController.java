@@ -165,6 +165,9 @@ public class AuthenticationController {
                                       @RequestParam String closingTime,
                                       @RequestParam MultipartFile image,
                                       @RequestParam String email,
+                                      @RequestParam double longitude,
+                                      @RequestParam double latitude,
+                                      @RequestParam Set<String> ShopType,
                                       @RequestParam String password,
                                       @RequestParam String confirmPassword) throws Exception {
         if (userService.findUserByEmail(email).isPresent()) {
@@ -177,7 +180,7 @@ public class AuthenticationController {
 
         Shop shop = new Shop();
 
-        /*Set<String> ShopType = shopSignupRequest.getShopType();
+        //Set<String> ShopType = shopSignupRequest.getShopType();
         Set<ShopType> types = new HashSet<>();
 
         if (ShopType == null) {
@@ -212,7 +215,7 @@ public class AuthenticationController {
                         types.add(userRole);
                 }
             });
-        }*/
+        }
 
         shop.setEmail(email);
         //shop.setRole(shopSignupRequest.getRole());
@@ -224,7 +227,9 @@ public class AuthenticationController {
         shop.setPhone(phone);
         shop.setRole("ROLE_SHOP");
         shop.setImage(image.getBytes());
-        //shop.setShopType(types);
+        shop.setLatitude(latitude);
+        shop.setLongitude(longitude);
+        shop.setShopType(types);
         //this.storageService.store(shopSignupRequest.getImage());
         //System.out.println(shopSignupRequest.getImage().getBytes());
         //shop.setImage(shopSignupRequest.getImage().getBytes());
