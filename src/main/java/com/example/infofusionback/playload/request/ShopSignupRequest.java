@@ -1,9 +1,12 @@
 package com.example.infofusionback.playload.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -19,13 +22,23 @@ public class ShopSignupRequest {
     private String phone ;
     private String openingTime;
     private String closingTime;
+    //@Nullable
+    //@JsonProperty("image")
+    //private MultipartFile image;
     private String email;
     private LocalDateTime d;
     private String role;
 
+    private double longitude;
+
+    private double latitude;
+
     private Set<String> shopType;
     private String password;
     private String confirmPassword;
+
+
+
 
 
 
@@ -116,4 +129,28 @@ public class ShopSignupRequest {
     public void setShopType(Set<String> shopType) {
         this.shopType = shopType;
     }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    /*public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }*/
 }

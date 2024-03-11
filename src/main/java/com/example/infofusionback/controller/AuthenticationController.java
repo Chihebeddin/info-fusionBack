@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,7 @@ import com.example.infofusionback.security.jwt.JwtResponse;
 import com.example.infofusionback.security.jwt.JwtTokenUtil;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
@@ -48,8 +50,11 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
 
+    @Autowired
+    private StorageServiceInterface storageService;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
@@ -153,18 +158,29 @@ public class AuthenticationController {
         return fs.getAllFidelityCards();
     }
     @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody ShopSignupRequest shopSignupRequest) throws Exception {
-        if (userService.findUserByEmail(shopSignupRequest.getEmail()).isPresent()) {
+    public ResponseEntity<?> register(@RequestParam String name,
+                                      @RequestParam String location,
+                                      @RequestParam String phone,
+                                      @RequestParam String openingTime,
+                                      @RequestParam String closingTime,
+                                      @RequestParam MultipartFile image,
+                                      @RequestParam String email,
+                                      @RequestParam double longitude,
+                                      @RequestParam double latitude,
+                                      @RequestParam Set<String> ShopType,
+                                      @RequestParam String password,
+                                      @RequestParam String confirmPassword) throws Exception {
+        if (userService.findUserByEmail(email).isPresent()) {
             return ResponseEntity.badRequest().body("User already exists");
         }
 
-        if (!shopSignupRequest.getPassword().equals(shopSignupRequest.getConfirmPassword())) {
+        if (!password.equals(confirmPassword)) {
             return ResponseEntity.badRequest().body("Passwords do not match");
         }
 
         Shop shop = new Shop();
 
-        Set<String> ShopType = shopSignupRequest.getShopType();
+        //Set<String> ShopType = shopSignupRequest.getShopType();
         Set<ShopType> types = new HashSet<>();
 
         if (ShopType == null) {
@@ -201,25 +217,33 @@ public class AuthenticationController {
             });
         }
 
-        shop.setEmail(shopSignupRequest.getEmail());
-        shop.setRole(shopSignupRequest.getRole());
-        shop.setPassword(passwordEncoder.encode(shopSignupRequest.getPassword()));
-        shop.setName(shopSignupRequest.getName());
-        shop.setOpeningTime(shopSignupRequest.getOpeningTime());
-        shop.setClosingTime(shopSignupRequest.getClosingTime());
+        shop.setEmail(email);
+        //shop.setRole(shopSignupRequest.getRole());
+        shop.setName(name);
+        shop.setOpeningTime(openingTime);
+        shop.setClosingTime(closingTime);
         shop.setD(LocalDateTime.now());
-        shop.setLocation(shopSignupRequest.getLocation());
-        shop.setPhone(shopSignupRequest.getPhone());
+        shop.setLocation(location);
+        shop.setPhone(phone);
         shop.setRole("ROLE_SHOP");
+        shop.setImage(image.getBytes());
+        shop.setLatitude(latitude);
+        shop.setLongitude(longitude);
         shop.setShopType(types);
+        //this.storageService.store(shopSignupRequest.getImage());
+        //System.out.println(shopSignupRequest.getImage().getBytes());
+        //shop.setImage(shopSignupRequest.getImage().getBytes());
+        System.out.println(image);
+        shop.setPassword(passwordEncoder.encode(password));
+
         shop = ss.saveShop(shop);
 
         try{
-            name="Hello "+shopSignupRequest.getName();
+            name="Hello "+name;
 
 
             System.out.println(name);
-            emailService.sendMailWithAttachment(shopSignupRequest.getEmail().toString(),
+            emailService.sendMailWithAttachment(email.toString(),
                     name.toString(),
                     "Account Infos");
         }catch (Exception e){

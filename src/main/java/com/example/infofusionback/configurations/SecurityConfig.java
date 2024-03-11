@@ -1,10 +1,13 @@
 package com.example.infofusionback.configurations;
 
 import com.example.infofusionback.entity.converter.UserConverter;
+import com.example.infofusionback.properties.StorageProperty;
 import com.example.infofusionback.security.UserDetailsService;
 import com.example.infofusionback.security.UserDetailsServiceInterface;
 import com.example.infofusionback.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.infofusionback.security.jwt.JwtTokenFilter;
+import com.example.infofusionback.service.StorageServiceImpl;
+import com.example.infofusionback.service.StorageServiceInterface;
 import com.example.infofusionback.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +46,12 @@ public class SecurityConfig {
         return UserDetailsService.create(userService);
     }
 
-
+    @Bean
+    public StorageProperty storageProperty(){return new StorageProperty();}
+    @Bean
+    public StorageServiceInterface storageService(final StorageProperty storageProperty) {
+        return StorageServiceImpl.create(storageProperty);
+    }
 
     @Bean
     public UserConverter userConverter(){
