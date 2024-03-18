@@ -157,7 +157,7 @@ public class AuthenticationController {
     public List<FidelityCard> getFidelityCards() {
         return fs.getAllFidelityCards();
     }
-    @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
+   @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestParam String name,
                                       @RequestParam String location,
                                       @RequestParam String phone,
@@ -216,7 +216,6 @@ public class AuthenticationController {
                 }
             });
         }
-
         shop.setEmail(email);
         //shop.setRole(shopSignupRequest.getRole());
         shop.setName(name);
@@ -233,7 +232,6 @@ public class AuthenticationController {
         //this.storageService.store(shopSignupRequest.getImage());
         //System.out.println(shopSignupRequest.getImage().getBytes());
         //shop.setImage(shopSignupRequest.getImage().getBytes());
-        System.out.println(image);
         shop.setPassword(passwordEncoder.encode(password));
 
         shop = ss.saveShop(shop);
