@@ -87,12 +87,12 @@ public class SecurityConfig {
                         auth.requestMatchers(HttpMethod.OPTIONS,"*").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
-                                .requestMatchers("/clients/**").permitAll()
-                                .requestMatchers("/shops/**").permitAll()
-                                .requestMatchers("/products/**").permitAll()
-                                .requestMatchers("/categories/**").permitAll()
-                                .requestMatchers("/orders/**").permitAll()
-                                .requestMatchers("/fidelitycards/**").permitAll()
+                                .requestMatchers("/clients/**").hasRole("ROLE_CLIENT")
+                                .requestMatchers("/shops/**").hasRole("ROLE_SHOP")
+                                .requestMatchers("/products/**").hasRole("ROLE-CLIENT")
+                                .requestMatchers("/categories/**").hasRole("ROLE-CLIENT")
+                                .requestMatchers("/orders/**").hasRole("ROLE-CLIENT")
+                                .requestMatchers("/fidelitycards/**").hasRole("ROLE-CLIENT")
                                 .requestMatchers("/contains/**").permitAll()
                                 .anyRequest().authenticated()
                 );
@@ -147,4 +147,7 @@ public class SecurityConfig {
         expressionHandler.setRoleHierarchy(roleHierarchy());
         return expressionHandler;
     }
+
+
+
 }

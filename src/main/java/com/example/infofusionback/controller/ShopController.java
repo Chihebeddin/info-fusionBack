@@ -2,13 +2,13 @@ package com.example.infofusionback.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,16 +33,19 @@ public class ShopController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public Shop createShop(@RequestBody Shop shop) {
 		return shopService.saveShop(shop);
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public Shop getShopById(@PathVariable Long id) {
 		return shopService.getShopById(id);
 	}
 
 	@GetMapping("/{id}/image")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
 		System.out.println("hello");
 		Shop shopOptional = shopService.getShopById(id);
@@ -62,11 +65,13 @@ public class ShopController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public List<Shop> getAllShops() {
 		return shopService.getAllShops();
 	}
-	
+
 	@GetMapping("/filtered")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public List<Shop> filteredShops() {
 		List<Shop> shops = new ArrayList<>();
 		for (Shop s : this.getAllShops()) {
@@ -78,12 +83,14 @@ public class ShopController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public Shop updateShop(@PathVariable Long id, @RequestBody Shop shop) {
 		shop.setId(id);
 		return shopService.saveShop(shop);
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	public void deleteShop(@PathVariable Long id) {
 		shopService.deleteShop(id);
 	}

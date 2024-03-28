@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.example.infofusionback.entity.BO.UserBO;
 import com.example.infofusionback.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +28,13 @@ public class ClientController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Client createClient(@RequestBody Client client) {
         return clientService.saveClient(client);
     }
 
     @GetMapping(value ="/{id}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Client getClientById(@PathVariable Long id) {
         return clientService.getClientById(id);
     }
@@ -39,17 +42,20 @@ public class ClientController {
 
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public List<Client> getAllClients() {
         return clientService.getAllClients();
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
         client.setId(id);
         return clientService.saveClient(client);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     public void deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
     }
