@@ -33,19 +33,19 @@ public class ShopController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PreAuthorize("hasRole('SHOP')")
 	public Shop createShop(@RequestBody Shop shop) {
 		return shopService.saveShop(shop);
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PreAuthorize("hasRole('SHOP')")
 	public Shop getShopById(@PathVariable Long id) {
 		return shopService.getShopById(id);
 	}
 
 	@GetMapping("/{id}/image")
-	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PreAuthorize("hasRole('SHOP')")
 	public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
 		System.out.println("hello");
 		Shop shopOptional = shopService.getShopById(id);
@@ -65,7 +65,7 @@ public class ShopController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PreAuthorize("hasRole('SHOP')")
 	public List<Shop> getAllShops() {
 		return shopService.getAllShops();
 	}
@@ -83,14 +83,14 @@ public class ShopController {
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PreAuthorize("hasRole('SHOP')")
 	public Shop updateShop(@PathVariable Long id, @RequestBody Shop shop) {
 		shop.setId(id);
 		return shopService.saveShop(shop);
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PreAuthorize("hasRole('SHOP')")
 	public void deleteShop(@PathVariable Long id) {
 		shopService.deleteShop(id);
 	}

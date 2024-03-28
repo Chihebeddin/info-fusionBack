@@ -28,13 +28,13 @@ public class ClientController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public Client createClient(@RequestBody Client client) {
         return clientService.saveClient(client);
     }
 
     @GetMapping(value ="/{id}")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public Client getClientById(@PathVariable Long id) {
         return clientService.getClientById(id);
     }
@@ -42,20 +42,20 @@ public class ClientController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public List<Client> getAllClients() {
         return clientService.getAllClients();
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
         client.setId(id);
         return clientService.saveClient(client);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public void deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
     }
