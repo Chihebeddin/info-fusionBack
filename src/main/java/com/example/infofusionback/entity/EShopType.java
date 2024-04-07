@@ -2,6 +2,6 @@ package com.example.infofusionback.entity;
 
 public enum EShopType {
 	
-	Boulanger, Fleuriste, Epicerie, Boucher
+	Boulangerie, Fleuriste, Epicerie, Boucherie, Poissonnerie, Fromagerie, Grande_Surface
 
 }

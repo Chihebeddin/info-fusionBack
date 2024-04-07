@@ -48,205 +48,223 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private UserDetailsServiceInterface userDetailsService;
+	@Autowired
+	private UserDetailsServiceInterface userDetailsService;
 
-    @Autowired
-    private EmailSenderService emailService;
+	@Autowired
+	private EmailSenderService emailService;
 
-    @Autowired
-    private ClientService cs;
+	@Autowired
+	private ClientService cs;
 
-    @Autowired
-    private ShopService ss;
-    
-    @Autowired
-    private FidelityCardService fs;
+	@Autowired
+	private ShopService ss;
 
-    private String name;
+	@Autowired
+	private FidelityCardService fs;
 
-    @Autowired
-    private UserService userService;
+	private String name;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @Autowired
-    private ShopTypeRepository shopTypeRepository;
-    
-    private MessageSingleton msgGenerator = MessageSingleton.getInstance();
+	@Autowired
+	private UserService userService;
 
-    
-    
-    @RequestMapping(value = "/SignIn", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
-    }
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private ShopTypeRepository shopTypeRepository;
+
+	private MessageSingleton msgGenerator = MessageSingleton.getInstance();
 
 
-    private void authenticate(String email, String password) throws Exception {
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        String username = userDetails.getUsername();
-
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-
-    }
-
-    @RequestMapping(value = "/SignUpClient", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody ClientSignupRequest clientSignupRequest) throws Exception {
-        if (userService.findUserByEmail(clientSignupRequest.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Adresse mail déjà utilisée");
-        }
-
-        if (!clientSignupRequest.getPassword().equals(clientSignupRequest.getConfirmPassword())) {
-            return ResponseEntity.badRequest().body("Les mots de passe saisis ne correspondent pas");
-        }
-
-        Client client = new Client();
-        client.setEmail(clientSignupRequest.getEmail());
-        client.setRole(clientSignupRequest.getRole());
-        client.setPassword(passwordEncoder.encode(clientSignupRequest.getPassword()));
-        client.setFirstName(clientSignupRequest.getFirstName());
-        client.setLastName(clientSignupRequest.getLastName());
-        client.setD(LocalDateTime.now());
-        client.setBirthdate(clientSignupRequest.getBirthdate());
-        client.setRole("ROLE_CLIENT");
-        client.setPhone(clientSignupRequest.getPhone());
-        client = cs.saveClient(client);
-
-        FidelityCard fidelityCard = new FidelityCard();
+	@RequestMapping(value = "/SignIn", method = RequestMethod.POST)
+	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
+		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		final UserDetails userDetails = userDetailsService
+				.loadUserByUsername(authenticationRequest.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		return ResponseEntity.ok(new JwtResponse(token));
+	}
 
 
-        // Enregistrez le FidelityCard associé au client
-        fidelityCard = fs.saveFidelityCard(fidelityCard, client);
-        try{
-            emailService.sendMailWithAttachment(clientSignupRequest.getEmail().toString(),
-            		this.msgGenerator.welcomeClient(clientSignupRequest.getFirstName()),
-                    this.msgGenerator.welcomeSubject());
-        }catch (Exception e){
-            System.out.println(e.toString());
-        }
+	private void authenticate(String email, String password) throws Exception {
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully !"));
-    }
+		UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		String username = userDetails.getUsername();
 
-    @GetMapping("/current")
-    public Optional<UserBO> getUser(Authentication authentication) {
-        System.out.println("OOOOOOOO "+authentication.getName());
-        Optional<UserBO> user = userService.findUserByEmail(authentication.getName());
-        return user;
-    }
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-    @GetMapping("/fidelitycard")
-    public List<FidelityCard> getFidelityCards() {
-        return fs.getAllFidelityCards();
-    }
-   @RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestParam String name,
-                                      @RequestParam String location,
-                                      @RequestParam String phone,
-                                      @RequestParam String openingTime,
-                                      @RequestParam String closingTime,
-                                      @RequestParam MultipartFile image,
-                                      @RequestParam String email,
-                                      @RequestParam double longitude,
-                                      @RequestParam double latitude,
-                                      @RequestParam Set<String> ShopType,
-                                      @RequestParam String password,
-                                      @RequestParam String confirmPassword) throws Exception {
-        if (userService.findUserByEmail(email).isPresent()) {
-            return ResponseEntity.badRequest().body("Adresse mail déjà utilisée");
-        }
+	}
 
-        if (!password.equals(confirmPassword)) {
-            return ResponseEntity.badRequest().body("Les mots de passe saisis ne correspondent pas");
-        }
+	@RequestMapping(value = "/SignUpClient", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@RequestBody ClientSignupRequest clientSignupRequest) throws Exception {
+		if (userService.findUserByEmail(clientSignupRequest.getEmail()).isPresent()) {
+			return ResponseEntity.badRequest().body("Adresse mail déjà utilisée");
+		}
 
-        Shop shop = new Shop();
+		if (!clientSignupRequest.getPassword().equals(clientSignupRequest.getConfirmPassword())) {
+			return ResponseEntity.badRequest().body("Les mots de passe saisis ne correspondent pas");
+		}
 
-        //Set<String> ShopType = shopSignupRequest.getShopType();
-        Set<ShopType> types = new HashSet<>();
+		Client client = new Client();
+		client.setEmail(clientSignupRequest.getEmail());
+		client.setRole(clientSignupRequest.getRole());
+		client.setPassword(passwordEncoder.encode(clientSignupRequest.getPassword()));
+		client.setFirstName(clientSignupRequest.getFirstName());
+		client.setLastName(clientSignupRequest.getLastName());
+		client.setD(LocalDateTime.now());
+		client.setBirthdate(clientSignupRequest.getBirthdate());
+		client.setRole("ROLE_CLIENT");
+		client.setPhone(clientSignupRequest.getPhone());
+		client = cs.saveClient(client);
 
-        if (ShopType == null) {
-            System.out.println("kjlkjljhjhjhohohljhl");
-            ShopType shopType = shopTypeRepository.findByType(EShopType.Boucher)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            types.add(shopType);
-        } else {
-            ShopType.forEach(type -> {
-                switch (type) {
-                    case "Fleuriste":
-                        ShopType adminRole = shopTypeRepository.findByType(EShopType.Fleuriste)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        types.add(adminRole);
+		FidelityCard fidelityCard = new FidelityCard();
 
-                        break;
-                    case "Epicerie":
-                        ShopType modRole = shopTypeRepository.findByType(EShopType.Epicerie)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        types.add(modRole);
 
-                        break;
-                    case "Boulanger":
-                        ShopType SecRole = shopTypeRepository.findByType(EShopType.Boulanger)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        types.add(SecRole);
+		// Enregistrez le FidelityCard associé au client
+		fidelityCard = fs.saveFidelityCard(fidelityCard, client);
+		try{
+			emailService.sendMailWithAttachment(clientSignupRequest.getEmail().toString(),
+					this.msgGenerator.welcomeClient(clientSignupRequest.getFirstName()),
+					this.msgGenerator.welcomeSubject());
+		}catch (Exception e){
+			System.out.println(e.toString());
+		}
 
-                        break;
-                    default:
-                        ShopType userRole = shopTypeRepository.findByType(EShopType.Boucher)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        types.add(userRole);
-                }
-            });
-        }
-        shop.setEmail(email);
-        //shop.setRole(shopSignupRequest.getRole());
-        shop.setName(name);
-        shop.setOpeningTime(openingTime);
-        shop.setClosingTime(closingTime);
-        shop.setD(LocalDateTime.now());
-        shop.setLocation(location);
-        shop.setPhone(phone);
-        shop.setRole("ROLE_SHOP");
-        shop.setImage(image.getBytes());
-        shop.setLatitude(latitude);
-        shop.setLongitude(longitude);
-        shop.setShopType(types);
-        //this.storageService.store(shopSignupRequest.getImage());
-        //System.out.println(shopSignupRequest.getImage().getBytes());
-        //shop.setImage(shopSignupRequest.getImage().getBytes());
-        shop.setPassword(passwordEncoder.encode(password));
+		return ResponseEntity.ok(new MessageResponse("User registered successfully !"));
+	}
 
-        shop = ss.saveShop(shop);
+	@GetMapping("/current")
+	public Optional<UserBO> getUser(Authentication authentication) {
+		System.out.println("OOOOOOOO "+authentication.getName());
+		Optional<UserBO> user = userService.findUserByEmail(authentication.getName());
+		return user;
+	}
 
-        try{
-            emailService.sendMailWithAttachment(email.toString(),
-                    this.msgGenerator.welcomeShop(),
-                    this.msgGenerator.welcomeSubject());
-        }catch (Exception e){
-            System.out.println(e.toString());
+	@GetMapping("/fidelitycard")
+	public List<FidelityCard> getFidelityCards() {
+		return fs.getAllFidelityCards();
+	}
+	@RequestMapping(value = "/SignUpShop", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@RequestParam String name,
+			@RequestParam String location,
+			@RequestParam String phone,
+			@RequestParam String openingTime,
+			@RequestParam String closingTime,
+			@RequestParam MultipartFile image,
+			@RequestParam String email,
+			@RequestParam double longitude,
+			@RequestParam double latitude,
+			@RequestParam Set<String> ShopType,
+			@RequestParam String password,
+			@RequestParam String confirmPassword) throws Exception {
+		if (userService.findUserByEmail(email).isPresent()) {
+			return ResponseEntity.badRequest().body("Adresse mail déjà utilisée");
+		}
 
-        }
+		if (!password.equals(confirmPassword)) {
+			return ResponseEntity.badRequest().body("Les mots de passe saisis ne correspondent pas");
+		}
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
+		Shop shop = new Shop();
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    @SecurityRequirement(name = "JWT")
-    public ResponseEntity<?> me(Authentication authentication) {
-        Optional<UserBO> user = userService.findUserByEmail(authentication.getName());
-        return user.map(value -> ResponseEntity.ok(new UserDTO(value))).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-    }
+		Set<ShopType> types = new HashSet<>();
+
+		addShopType(ShopType, types);
+
+		shop.setEmail(email);
+		shop.setName(name);
+		shop.setOpeningTime(openingTime);
+		shop.setClosingTime(closingTime);
+		shop.setD(LocalDateTime.now());
+		shop.setLocation(location);
+		shop.setPhone(phone);
+		shop.setRole("ROLE_SHOP");
+		shop.setImage(image.getBytes());
+		shop.setLatitude(latitude);
+		shop.setLongitude(longitude);
+		shop.setShopType(types);
+		shop.setPassword(passwordEncoder.encode(password));
+
+		shop = ss.saveShop(shop);
+
+		try{
+			emailService.sendMailWithAttachment(email.toString(),
+					this.msgGenerator.welcomeShop(),
+					this.msgGenerator.welcomeSubject());
+		}catch (Exception e){
+			System.out.println(e.toString());
+
+		}
+
+		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+	}
+
+
+	private void addShopType(Set<String> ShopType, Set<ShopType> types) {
+		if (ShopType == null) {
+			ShopType shopType = shopTypeRepository.findByType(EShopType.Boucherie)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+			types.add(shopType);
+		} else {
+			ShopType.forEach(type -> {
+				switch (type) {
+				case "Fleuriste":
+					ShopType adminRole = shopTypeRepository.findByType(EShopType.Fleuriste)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(adminRole);
+
+					break;
+				case "Epicerie":
+					ShopType modRole = shopTypeRepository.findByType(EShopType.Epicerie)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(modRole);
+
+					break;
+				case "Boulanger":
+					ShopType SecRole = shopTypeRepository.findByType(EShopType.Boulangerie)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(SecRole);
+
+					break;
+				case "Poissonnerie":
+					ShopType ptype = shopTypeRepository.findByType(EShopType.Poissonnerie)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(ptype);
+
+					break;
+				case "Fromagerie":
+					ShopType ftype = shopTypeRepository.findByType(EShopType.Fromagerie)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(ftype);
+
+					break;
+				case "GrandeSurface":
+					ShopType gtype = shopTypeRepository.findByType(EShopType.Grande_Surface)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(gtype);
+
+					break;
+				default:
+					ShopType userRole = shopTypeRepository.findByType(EShopType.Boucherie)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					types.add(userRole);
+				}
+			});
+		}
+	}
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	@SecurityRequirement(name = "JWT")
+	public ResponseEntity<?> me(Authentication authentication) {
+		Optional<UserBO> user = userService.findUserByEmail(authentication.getName());
+		return user.map(value -> ResponseEntity.ok(new UserDTO(value))).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
 }
