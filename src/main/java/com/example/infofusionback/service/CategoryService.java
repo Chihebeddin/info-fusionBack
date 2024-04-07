@@ -12,6 +12,8 @@ public interface CategoryService {
 	List<Category> allCategories();
 
 	Category getCategoryById(long id);
+	
+	Category getCategoryByName(String name);
 
 	Category addCategory(Category categorie);
 

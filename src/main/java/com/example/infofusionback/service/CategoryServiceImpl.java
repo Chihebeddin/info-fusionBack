@@ -20,9 +20,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category getCategoryById(long id) {
-
-
 		return repo.findById(id);
+	}
+	
+	@Override
+	public Category getCategoryByName(String name) {
+		return repo.findByName(name);
 	}
 
 	@Override
