@@ -54,7 +54,7 @@ public class Shop extends User {
 		}
 
 
-	public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopType, byte[] image, double longitude, double latitude ) {
+	/*public Shop(String email, String password, LocalDateTime d, String role, String name, String location, String phone, String openingTime, String closingTime, Set<ShopType> shopType, byte[] image, double longitude, double latitude ) {
 		super(email, password, d, role);
 		this.name = name;
 		this.location = location;
@@ -65,7 +65,7 @@ public class Shop extends User {
 		this.image = image;
 		this.longitude = longitude;
 		this.latitude = latitude;
-	}
+	}*/
 
 	public String getName() {
 		return name;

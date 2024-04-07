@@ -14,8 +14,8 @@ public interface ShopRepository extends CrudRepository<Shop, Long> {
 
 	Shop findById(long id);
 
-	@Query(value="select s from Shop s "
-			+ "join Product p on s.id = p.shop.id")
+	/*@Query(value="select s from Shop s "
+			+ "join Product p on s.id = p.shop.id")*/
 	List<Shop> findAll();
 
 }

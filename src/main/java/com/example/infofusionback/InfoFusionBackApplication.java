@@ -1,5 +1,4 @@
 package com.example.infofusionback;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.example.infofusionback.entity.*;
 import com.example.infofusionback.service.*;
@@ -9,12 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.util.ResourceUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -22,7 +15,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
-@EnableScheduling
 public class InfoFusionBackApplication {
 	
 	@Autowired
@@ -138,13 +130,13 @@ public class InfoFusionBackApplication {
 		fruits.setName("Fruits");
 
 		Category vegetables = new Category();
-		vegetables.setName("Vegetables");
+		vegetables.setName("Légumes");
 
 		Category spices = new Category();
-		spices.setName("Spices");
+		spices.setName("Epices");
 
 		Category beers = new Category();
-		beers.setName("Beers");
+		beers.setName("Bières et cidres");
 
 		cts.addCategory(fruits);
 		cts.addCategory(vegetables);

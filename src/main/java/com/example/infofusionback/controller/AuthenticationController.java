@@ -1,5 +1,6 @@
 package com.example.infofusionback.controller;
 
+import com.example.infofusionback.MessageSingleton;
 import com.example.infofusionback.entity.*;
 import com.example.infofusionback.entity.BO.UserBO;
 
@@ -50,10 +51,6 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
-    @Autowired
-    private StorageServiceInterface storageService;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -68,6 +65,7 @@ public class AuthenticationController {
 
     @Autowired
     private ShopService ss;
+    
     @Autowired
     private FidelityCardService fs;
 
@@ -78,12 +76,14 @@ public class AuthenticationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private ClientService clientService;
-
+    
     @Autowired
     private ShopTypeRepository shopTypeRepository;
+    
+    private MessageSingleton msgGenerator = MessageSingleton.getInstance();
 
+    
+    
     @RequestMapping(value = "/SignIn", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -106,11 +106,11 @@ public class AuthenticationController {
     @RequestMapping(value = "/SignUpClient", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody ClientSignupRequest clientSignupRequest) throws Exception {
         if (userService.findUserByEmail(clientSignupRequest.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("User already exists");
+            return ResponseEntity.badRequest().body("Adresse mail déjà utilisée");
         }
 
         if (!clientSignupRequest.getPassword().equals(clientSignupRequest.getConfirmPassword())) {
-            return ResponseEntity.badRequest().body("Passwords do not match");
+            return ResponseEntity.badRequest().body("Les mots de passe saisis ne correspondent pas");
         }
 
         Client client = new Client();
@@ -131,19 +131,14 @@ public class AuthenticationController {
         // Enregistrez le FidelityCard associé au client
         fidelityCard = fs.saveFidelityCard(fidelityCard, client);
         try{
-            name="Hello "+clientSignupRequest.getLastName();
-
-
-            System.out.println(name);
             emailService.sendMailWithAttachment(clientSignupRequest.getEmail().toString(),
-                    name.toString(),
-                    "Account Infos");
+            		this.msgGenerator.welcomeClient(clientSignupRequest.getFirstName()),
+                    this.msgGenerator.welcomeSubject());
         }catch (Exception e){
             System.out.println(e.toString());
-
         }
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("User registered successfully !"));
     }
 
     @GetMapping("/current")
@@ -171,11 +166,11 @@ public class AuthenticationController {
                                       @RequestParam String password,
                                       @RequestParam String confirmPassword) throws Exception {
         if (userService.findUserByEmail(email).isPresent()) {
-            return ResponseEntity.badRequest().body("User already exists");
+            return ResponseEntity.badRequest().body("Adresse mail déjà utilisée");
         }
 
         if (!password.equals(confirmPassword)) {
-            return ResponseEntity.badRequest().body("Passwords do not match");
+            return ResponseEntity.badRequest().body("Les mots de passe saisis ne correspondent pas");
         }
 
         Shop shop = new Shop();
@@ -237,13 +232,9 @@ public class AuthenticationController {
         shop = ss.saveShop(shop);
 
         try{
-            name="Hello "+name;
-
-
-            System.out.println(name);
             emailService.sendMailWithAttachment(email.toString(),
-                    name.toString(),
-                    "Account Infos");
+                    this.msgGenerator.welcomeShop(),
+                    this.msgGenerator.welcomeSubject());
         }catch (Exception e){
             System.out.println(e.toString());
 

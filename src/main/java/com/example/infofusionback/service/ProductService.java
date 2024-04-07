@@ -8,7 +8,7 @@ import com.example.infofusionback.entity.Category;
 import com.example.infofusionback.entity.Product;
 import com.example.infofusionback.entity.Shop;
 
-
+@Service
 public interface ProductService {
 
 	List<Product> allProducts();
